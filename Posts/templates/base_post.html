@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ post.title }}
+    {% if post.author %}
+    - {{ post.author.nick_name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="display-4 text-center">{{ post.title }}</h1>
+    {% if post.author %}
+        <p class="text-center"><a href="http://localhost:8000/user/{{ post.author.id }}/">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}</p>
+    {% else %}
+        <p class="text-center">管理员 发布于 {{ post.post_time }}</p>
+    {% endif %}
+    <hr>
+    <div>
+        {% block post_begin_section %}
+        {% endblock %}
+    </div>
+    <div>
+        {{ post.content|safe }}
+    </div>
+    <hr>
+    <div>
+        {% block post_end_section %}
+        {% endblock %}
+    </div>
+{% endblock %}

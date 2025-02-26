@@ -1,0 +1,28 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}
+    用户登录
+{% endblock %}
+
+{% block image %}
+    {% static 'Users/HappyStarRail.jpg' %}
+{% endblock %}
+
+{% block user_page_content %}
+    <h1 class="display-4">用户登录</h1>
+    {% if signup_success %}
+        <div class="alert alert-success" role="alert">
+            注册成功，现在您可以再此登录~
+        </div>
+    {% elif msg %}
+        <div class="alert alert-warning" role="alert">
+            登录失败：{{ msg }}
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">登录</button>
+    </form>
+{% endblock %}

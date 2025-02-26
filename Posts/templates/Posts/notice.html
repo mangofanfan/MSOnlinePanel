@@ -1,0 +1,7 @@
+{% extends "base_post.html" %}
+
+{% block post_end_section %}
+    <div class="alert alert-info">
+        <strong>这是一条来自管理员的通知。</strong>通知的最近更新时间是 {{ post.update_time }}。
+    </div>
+{% endblock %}

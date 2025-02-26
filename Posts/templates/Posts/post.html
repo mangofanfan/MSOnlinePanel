@@ -1,0 +1,7 @@
+{% extends "base_post.html" %}
+
+{% block post_end_section %}
+    <div class="alert alert-success">
+        <strong>这是一篇由本站用户发布的文章~</strong><br>本文的作者是 {{ post.author.nick_name }}，最近更新时间是 {{ post.update_time }}。
+    </div>
+{% endblock %}

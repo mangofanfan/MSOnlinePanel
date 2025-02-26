@@ -1,0 +1,8 @@
+<div class="post-list">
+    <strong>{{ prefix }} 文章列表：</strong>
+    <ul>
+        {% for post in post_list %}
+            <li><a href="http://localhost:8000/post/post/{{ post.id }}/">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,24 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}
+    新用户注册
+{% endblock %}
+
+{% block image %}
+    {% static 'Users/BestWishes.jpg' %}
+{% endblock %}
+
+{% block user_page_content %}
+    <h1 class="display-4">新用户注册</h1>
+    {% if msg %}
+        <div class="alert alert-warning" role="alert">
+            注册失败：{{ msg }}
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">注册</button>
+    </form>
+{% endblock %}

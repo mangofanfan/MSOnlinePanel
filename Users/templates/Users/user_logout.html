@@ -1,0 +1,21 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}
+    登出/注销
+{% endblock %}
+
+{% block image %}
+    {% static 'Users/MerryChristmasStarRail.jpg' %}
+{% endblock %}
+
+{% block user_page_content %}
+    <h1 class="display-4">登出 / 注销</h1>
+    <div class="alert alert-info" role="alert">
+        注销登录状态之后，您将需要再次登录以访问您的用户资料，或是与其他用户交流。
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">注销登录状态</button>
+    </form>
+{% endblock %}

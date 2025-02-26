@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+    用户 {{ user.nick_name }} 的个人中心
+{% endblock %}
+
+{% block content %}
+    <h1>{{ user.nick_name }}</h1>
+    <p>用户ID：{{ user.id }}</p>
+    <p>注册时间：{{ user.register_time }}</p>
+    <p>最近登录：{{ user.login_time }}</p>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "../base.html" %}
+
+{% block title %}
+    首页
+{% endblock %}
+
+{% block global_page_top %}
+    <strong>全站通知：</strong>平台正在建设中。
+{% endblock %}
+
+{% block content %}
+    <h1 class="display-4 text-left" style="margin-left: 20px;">
+        智心💗
+        <br>
+        <small class="text-muted">校园心理健康服务平台</small>
+    </h1>
+    <p class="lead text-center">本平台是<strong>基于多模态数据处理的心理健康AI评估预警系统</strong>的在线综合服务平台。</p>
+    <p class="text-center">我们已经同{{ num_school }}所院校达成合作协议，正在为{{ num_user }}名用户的心理健康安全保驾护航。</p>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load site_url %}
+
+{% block title %}
+    用户中心
+{% endblock %}
+
+{% block global_page_top %}
+    {% if not user.value_P %}
+    	<div class="alert alert-info" style="margin-bottom: 0;">
+            暂时还没有数据哦，为什么不先四处逛逛呢？
+            <button type="button" class="btn btn-outline-info">联系我们</button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">{{ request.session.login_user_name }} | <small>的用户中心</small></h1>
+    <div class="alert alert-success" role="alert">
+        这里是您的用户中心，此处的信息只有您自己可见。
+    </div>
+    <div class="row" style="margin-left: 0">
+        <div class=" col-6" style="padding-right: 3px; padding-left: 0 ;margin: 0;">
+            <div class="rounded-1 border-info" id="UserMe" style="background-color: linen; border-radius: 5px; padding: 10px;">
+                <h4 style="padding-top: 10px; padding-left: 10px;">个人资料</h4>
+                <hr>
+                <div style="padding: 0 10px 10px;">
+                    <p>用户ID：{{ user.id }}</p>
+                    <p>校内学号：{{ user.student_number }}</p>
+                    <p>昵称：{{ user.nick_name }}</p>
+                    <p>姓名：{{ user.rel_name }}</p>
+                    <p>联系方式：{{ user.phone_number }}</p>
+                    <a href="{% site_url 'user/me/' %}"><button type="button" class="btn btn-outline-info">个人资料变更</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6" style="padding-left: 3px; margin: 0;">
+            <div class="rounded-1 border-info" id="UserSign" style="background-color: honeydew; border-radius: 5px; padding: 10px;">
+                <h4 style="padding-top: 10px; padding-left: 10px;">个性签名</h4>
+                <hr>
+                <div style="padding: 0 10px 10px;">
+                    <form action="{% site_url 'user/me/' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">:)</span>
+                            </div>
+                            <textarea class="form-control" rows="7" name="user_sign" placeholder="这个人好懒啊，连一个字都不愿意写！=w"></textarea>
+                        </div>
+                        <input type="button" class="btn btn-outline-success" value="更新个人签名" style="margin-top: 10px;">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

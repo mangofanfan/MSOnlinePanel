@@ -1,0 +1,121 @@
+from datetime import datetime
+
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.template import loader
+
+from MSOnlinePanel.settings import SITE_URL
+from .forms import SignUpForm, LoginForm
+from .models import SiteUser
+from Posts.models import Post
+
+
+def user(request, input_id):
+    try:
+        _user = SiteUser.objects.get(id=input_id)
+    except SiteUser.DoesNotExist:
+        raise Http404("请求的用户不存在")
+    else:
+        context = {
+            "user": {
+                "id": _user.id,
+                "student_number": _user.student_number,
+                "nick_name": _user.nick_name,
+                "phone_number": _user.phone_number,
+                "register_time": _user.register_time,
+                "login_time": _user.login_time,
+            },
+            "sidebars":
+                [get_post_list(request, _user)],
+
+        }
+        return render(request, "Users/user.html", context)
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            nick_name = request.POST.get('nick_name')
+            rel_name = request.POST.get('rel_name')
+            phone_number = request.POST.get('phone_number')
+            student_number = request.POST.get('student_number')
+            password = request.POST.get('password')
+            try:
+                SiteUser.objects.create(nick_name=nick_name,
+                                        rel_name=rel_name,
+                                        phone_number=phone_number,
+                                        student_number=student_number,
+                                        password=password)
+                new_form = LoginForm()
+                return render(request, "Users/user_login.html", {"form": new_form, "signup_success": True})
+            except Exception as e:
+                raise e
+        else:
+            return render(request, 'Users/user_signup.html', {'form': form, "msg": "表单数据格式验证失败，请重新填写再提交！"})
+    else:
+        form = SignUpForm()
+        return render(request, 'Users/user_signup.html', {'form': form})
+
+
+def login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            student_number = request.POST.get('student_number')
+            password = request.POST.get('password')
+            try:
+                _user = SiteUser.objects.get(student_number=student_number)
+            except SiteUser.DoesNotExist:
+                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的学号尚未注册。"})
+            if _user.password == password:
+                # 登录成功
+                request.session["login_user_id"] = _user.id
+                request.session["login_user_name"] = _user.nick_name
+                _user.save()
+                return redirect(SITE_URL)
+            else:
+                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的密码错误。"})
+        else:
+            return render(request, "Users/user_login.html", {"form": form, "msg": "表单数据格式验证失败，请重新填写再提交！"})
+    else:
+        form = LoginForm()
+        return render(request, 'Users/user_login.html', {'form': form})
+
+
+def logout(request):
+    if request.method == 'POST':
+        for _name in ["login_user_id", "login_user_name"]:
+            try: del request.session[_name]
+            except KeyError: pass
+        return redirect(SITE_URL)
+    else:
+        return render(request, "Users/user_logout.html")
+
+
+def me(request):
+    _user = SiteUser.objects.get(id=request.session.get("login_user_id"))
+    context = {
+        "user":
+            {
+                "id": _user.id,
+                "student_number": _user.student_number,
+                "nick_name": _user.nick_name,
+                "rel_name": _user.rel_name,
+                "phone_number": _user.phone_number,
+                "register_time": _user.register_time,
+                "login_time": _user.login_time,
+                "value_P": _user.value_P,
+            },
+        "sidebars":
+            [get_post_list(request, _user)],
+        "global_page_top": True,
+    }
+    return render(request, "Users/user_me.html", context)
+
+
+def get_post_list(request, _user: SiteUser):
+    post_list = []
+    for _post in Post.objects.filter(author=_user):
+        post_list.append({"id": _post.id, "title": _post.title})
+    return loader.render_to_string("Posts/post_list_widget.html", {"prefix": f"{_user.nick_name}", "post_list": post_list}, request)
