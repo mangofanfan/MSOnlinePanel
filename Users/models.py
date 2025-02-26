@@ -8,6 +8,7 @@ class SiteUser(models.Model):
     rel_name = models.CharField(max_length=20, verbose_name="真实姓名")
     nick_name = models.CharField(max_length=20, verbose_name="显示昵称")
     phone_number = models.CharField(max_length=11, verbose_name="电话号码")
+    sign = models.TextField(null=True, blank=True, verbose_name="个性签名")
     register_time = models.DateTimeField(auto_now_add=True, verbose_name="注册时间")
     login_time = models.DateTimeField(auto_now=True, verbose_name="上次编辑时间")
 

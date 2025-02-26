@@ -24,9 +24,11 @@ def user(request, input_id):
                 "phone_number": _user.phone_number,
                 "register_time": _user.register_time,
                 "login_time": _user.login_time,
+                "sign": _user.sign,
             },
             "sidebars":
                 [get_post_list(request, _user)],
+            "global_page_top": True if _user.sign else False,
 
         }
         return render(request, "Users/user.html", context)
@@ -69,11 +71,11 @@ def login(request):
             except SiteUser.DoesNotExist:
                 return render(request, "Users/user_login.html", {"form": form, "msg": "输入的学号尚未注册。"})
             if _user.password == password:
-                # 登录成功
+                # 登录成功，跳转到用户中心
                 request.session["login_user_id"] = _user.id
                 request.session["login_user_name"] = _user.nick_name
                 _user.save()
-                return redirect(SITE_URL)
+                return me(request)
             else:
                 return render(request, "Users/user_login.html", {"form": form, "msg": "输入的密码错误。"})
         else:
@@ -94,7 +96,11 @@ def logout(request):
 
 
 def me(request):
-    _user = SiteUser.objects.get(id=request.session.get("login_user_id"))
+    # 先获取用户信息
+    try:
+        _user = SiteUser.objects.get(id=request.session.get("login_user_id"))
+    except KeyError:
+        return render(request, "Users/user_login.html")
     context = {
         "user":
             {
@@ -106,16 +112,43 @@ def me(request):
                 "register_time": _user.register_time,
                 "login_time": _user.login_time,
                 "value_P": _user.value_P,
+                "sign": _user.sign,
             },
         "sidebars":
-            [get_post_list(request, _user)],
+            [
+                get_post_list(request, _user),
+                get_user_link(request, _user),
+            ],
         "global_page_top": True,
     }
-    return render(request, "Users/user_me.html", context)
+
+    if request.method == "POST":
+        _dict = {}
+        try: _dict["nick_name"] = request.POST.get("nick_name")
+        except KeyError: pass
+        try: _dict["sign"] = request.POST.get("sign")
+        except KeyError: pass
+        if not _dict:
+            context["success"] = False
+            context["msg"] = "未获取到需要更新的用户资料或签名。"
+            return render(request, "Users/user_me.html", context)
+        for key, value in _dict.items():
+            if not value: continue
+            setattr(_user, key, value)
+            _user.save()
+        context["success"] = True
+        return render(request, "Users/user_me.html", context)
+
+    else:
+        return render(request, "Users/user_me.html", context)
 
 
 def get_post_list(request, _user: SiteUser):
     post_list = []
     for _post in Post.objects.filter(author=_user):
         post_list.append({"id": _post.id, "title": _post.title})
-    return loader.render_to_string("Posts/post_list_widget.html", {"prefix": f"{_user.nick_name}", "post_list": post_list}, request)
+    return loader.render_to_string("Posts/post_list_widget.html", {"prefix": _user.nick_name, "post_list": post_list}, request)
+
+
+def get_user_link(request, _user: SiteUser):
+    return loader.render_to_string("Users/user_link_widget.html", {"prefix": _user.nick_name, "id": _user.id}, request)

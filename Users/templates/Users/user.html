@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% if user.sign %}
+    {% block global_page_top %}
+        <p class="text-center" style="margin-bottom: 0;">{{ user.sign|safe }}</p>
+    {% endblock %}
+{% endif %}
+
 {% block title %}
     用户 {{ user.nick_name }} 的个人中心
 {% endblock %}

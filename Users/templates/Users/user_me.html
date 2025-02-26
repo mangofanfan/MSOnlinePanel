@@ -19,18 +19,35 @@
     <div class="alert alert-success" role="alert">
         这里是您的用户中心，此处的信息只有您自己可见。
     </div>
+    {% if success is False %}
+        <div class="alert alert-warning" role="alert">
+            更新用户信息失败：{{ msg }}
+        </div>
+    {% elif success is True %}
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            更新用户信息成功！
+        </div>
+    {% endif %}
     <div class="row" style="margin-left: 0">
         <div class=" col-6" style="padding-right: 3px; padding-left: 0 ;margin: 0;">
             <div class="rounded-1 border-info" id="UserMe" style="background-color: linen; border-radius: 5px; padding: 10px;">
                 <h4 style="padding-top: 10px; padding-left: 10px;">个人资料</h4>
                 <hr>
                 <div style="padding: 0 10px 10px;">
-                    <p>用户ID：{{ user.id }}</p>
-                    <p>校内学号：{{ user.student_number }}</p>
-                    <p>昵称：{{ user.nick_name }}</p>
-                    <p>姓名：{{ user.rel_name }}</p>
-                    <p>联系方式：{{ user.phone_number }}</p>
-                    <a href="{% site_url 'user/me/' %}"><button type="button" class="btn btn-outline-info">个人资料变更</button></a>
+                    <form method="post" action="{% site_url 'user/me/' %}">
+                        {% csrf_token %}
+                        <p>用户ID：{{ user.id }}</p>
+                        <p>校内学号：{{ user.student_number }}</p>
+                        <div class="form-inline">
+                            <label class="form-check-label d-inline-block">
+                            昵称：<input name="nick_name" value="{{ user.nick_name }}" class="form-control d-inline-block" type="text">
+                            </label>
+                        </div>
+                        <p>姓名：{{ user.rel_name }}</p>
+                        <p>联系方式：{{ user.phone_number }}</p>
+                        <input type="submit" class="btn btn-outline-info" value="更新个人资料" style="margin-top: 10px;">
+                    </form>
                 </div>
             </div>
         </div>
@@ -45,9 +62,9 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">:)</span>
                             </div>
-                            <textarea class="form-control" rows="7" name="user_sign" placeholder="这个人好懒啊，连一个字都不愿意写！=w"></textarea>
+                            <textarea class="form-control" rows="8" name="sign" placeholder="这个人好懒啊，连一个字都不愿意写！=w">{{ user.sign }}</textarea>
                         </div>
-                        <input type="button" class="btn btn-outline-success" value="更新个人签名" style="margin-top: 10px;">
+                        <input type="submit" class="btn btn-outline-success" value="更新个人签名" style="margin-top: 10px;">
                     </form>
                 </div>
             </div>
