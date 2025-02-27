@@ -9,13 +9,17 @@
     </style>
 {% endblock %}
 
+{% block global_page_top %}
+	智心平台目前是早期技术验证阶段，所以不要尝试用你的真实学号来注册或登录哦
+{% endblock %}
+
 {% block main_body %}
     <div class="row">
-        <div class="col-md-8" style="padding-top: 20px;">
-            <img src="{% block image %}{% endblock %}" alt="Dec img" class="img-rounded img-responsive" style="border-radius: 10px; width: 100%;" />
+        <div class="col-md-8">
+            <img src="{% block image %}{% endblock %}" alt="Dec img" class="img-rounded img-responsive border-card" style="border-radius: 10px; width: 100%;" />
         </div>
         <div class="col-md-4">
-            <div class="border rounded" style="border-radius: 10px; border-width: 2px; background-color: ghostwhite; padding: 20px;">
+            <div class="border rounded-1 border-card" style="border-radius: 10px; border-width: 2px; background-color: rgba(248,248,255,0.8); padding: 20px;">
                 {% block user_page_content %}
                 {% endblock %}
             </div>

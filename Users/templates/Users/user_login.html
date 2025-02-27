@@ -1,4 +1,5 @@
 {% extends "base_user.html" %}
+{% load site_url %}
 {% load static %}
 
 {% block title %}
@@ -11,11 +12,7 @@
 
 {% block user_page_content %}
     <h1 class="display-4">用户登录</h1>
-    {% if signup_success %}
-        <div class="alert alert-success" role="alert">
-            注册成功，现在您可以再此登录~
-        </div>
-    {% elif msg %}
+    {% if msg %}
         <div class="alert alert-warning" role="alert">
             登录失败：{{ msg }}
         </div>
@@ -24,5 +21,6 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">登录</button>
+        <a href="{% site_url 'user/signup/' %}"><button type="button" class="btn btn-outline-success">注册</button></a>
     </form>
 {% endblock %}

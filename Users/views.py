@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.template import loader
@@ -49,15 +50,14 @@ def signup(request):
                                         phone_number=phone_number,
                                         student_number=student_number,
                                         password=password)
-                new_form = LoginForm()
-                return render(request, "Users/user_login.html", {"form": new_form, "signup_success": True})
-            except Exception as e:
-                raise e
+                return render(request, "Users/user_signup.html", {"form": form, "signup_success": True, "global_page_top": True})
+            except IntegrityError:
+                return render(request, "Users/user_signup.html", {"form": form, "msg": "学号已经被占用，请尝试与平台管理员联系。", "global_page_top": True})
         else:
-            return render(request, 'Users/user_signup.html', {'form': form, "msg": "表单数据格式验证失败，请重新填写再提交！"})
+            return render(request, 'Users/user_signup.html', {'form': form, "msg": "表单数据格式验证失败，请重新填写再提交！", "global_page_top": True})
     else:
         form = SignUpForm()
-        return render(request, 'Users/user_signup.html', {'form': form})
+        return render(request, 'Users/user_signup.html', {'form': form, "global_page_top": True})
 
 
 def login(request):
@@ -69,20 +69,24 @@ def login(request):
             try:
                 _user = SiteUser.objects.get(student_number=student_number)
             except SiteUser.DoesNotExist:
-                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的学号尚未注册。"})
+                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的学号尚未注册。", "global_page_top": True})
             if _user.password == password:
                 # 登录成功，跳转到用户中心
                 request.session["login_user_id"] = _user.id
                 request.session["login_user_name"] = _user.nick_name
                 _user.save()
-                return me(request)
+                return redirect("/user/me/")
             else:
-                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的密码错误。"})
+                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的密码错误。", "global_page_top": True})
         else:
-            return render(request, "Users/user_login.html", {"form": form, "msg": "表单数据格式验证失败，请重新填写再提交！"})
+            return render(request, "Users/user_login.html", {"form": form, "msg": "表单数据格式验证失败，请重新填写再提交！", "global_page_top": True})
     else:
-        form = LoginForm()
-        return render(request, 'Users/user_login.html', {'form': form})
+        try: SiteUser.objects.get(id=request.session.get("login_user_id"))
+        except SiteUser.DoesNotExist:
+            form = LoginForm()
+            return render(request, 'Users/user_login.html', {'form': form, "global_page_top": True})
+        else:
+            return redirect("/user/me/")
 
 
 def logout(request):
@@ -92,15 +96,13 @@ def logout(request):
             except KeyError: pass
         return redirect(SITE_URL)
     else:
-        return render(request, "Users/user_logout.html")
+        return render(request, "Users/user_logout.html", {"global_page_top": True})
 
 
 def me(request):
     # 先获取用户信息
-    try:
-        _user = SiteUser.objects.get(id=request.session.get("login_user_id"))
-    except KeyError:
-        return render(request, "Users/user_login.html")
+    try: _user = SiteUser.objects.get(id=request.session.get("login_user_id"))
+    except KeyError: return redirect("/users/me/")
     context = {
         "user":
             {

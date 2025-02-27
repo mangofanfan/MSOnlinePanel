@@ -1,0 +1,18 @@
+{% load site_url %}
+{# 这是专门放置于侧边栏的用户简要信息组件 #}
+
+<div class="sidebar-widget" style="text-align: center;">
+    {% if nick_name %}
+        <strong>欢迎回来，{{ nick_name }}</strong>
+        <hr>
+        {% if sign %}
+            {{ sign|safe }}
+            <hr>
+        {% endif %}
+        <a href="{% site_url 'user/' id '/' %}">用户页面</a> | <a href="{% site_url 'user/me' %}">用户中心</a>
+    {% else %}
+        <strong>未登录</strong>
+        <hr>
+        <a href="{% site_url 'user/login/' %}">登录</a> | <a href="{% site_url 'user/signup/' %}">注册</a>
+    {% endif %}
+</div>

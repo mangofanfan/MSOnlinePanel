@@ -19,7 +19,7 @@ def post(request, input_id):
                  "post_time": _post.post_time,
                  "update_time": _post.update_time, }
         }
-        return render(request, "posts/post.html", context)
+        return render(request, "Posts/post.html", context)
 
 
 def notice(request, input_id):
@@ -36,7 +36,7 @@ def notice(request, input_id):
                  "post_time": _post.post_time,
                  "update_time": _post.update_time, }
         }
-        return render(request, "posts/notice.html", context)
+        return render(request, "Posts/notice.html", context)
 
 
 def post_list(request):
@@ -46,4 +46,4 @@ def post_list(request):
         "posts": posts,
         "notices": notices,
     }
-    return render(request, "posts/list.html", context)
+    return render(request, "Posts/list.html", context)
