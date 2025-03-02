@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 
 from MSOnlinePanel.settings import SITE_URL
+from Upload.models import File
 from .forms import SignUpForm, LoginForm
 from .models import SiteUser
 from Posts.models import Post
@@ -28,7 +29,10 @@ def user(request, input_id):
                 "sign": _user.sign,
             },
             "sidebars":
-                [get_post_list(request, _user)],
+                [
+                    get_post_list(request, _user),
+                    get_file_list(request, _user),
+                ],
             "global_page_top": True if _user.sign else False,
 
         }
@@ -81,8 +85,7 @@ def login(request):
         else:
             return render(request, "Users/user_login.html", {"form": form, "msg": "表单数据格式验证失败，请重新填写再提交！", "global_page_top": True})
     else:
-        try: SiteUser.objects.get(id=request.session.get("login_user_id"))
-        except SiteUser.DoesNotExist:
+        if request.session.get("login_user_id") is None:
             form = LoginForm()
             return render(request, 'Users/user_login.html', {'form': form, "global_page_top": True})
         else:
@@ -118,8 +121,9 @@ def me(request):
             },
         "sidebars":
             [
-                get_post_list(request, _user),
                 get_user_link(request, _user),
+                get_post_list(request, _user),
+                get_file_list(request, _user),
             ],
         "global_page_top": True,
     }
@@ -147,9 +151,16 @@ def me(request):
 
 def get_post_list(request, _user: SiteUser):
     post_list = []
-    for _post in Post.objects.filter(author=_user):
+    for _post in Post.objects.filter(author=_user).order_by("-post_time")[:6]:
         post_list.append({"id": _post.id, "title": _post.title})
     return loader.render_to_string("Posts/post_list_widget.html", {"prefix": _user.nick_name, "post_list": post_list}, request)
+
+
+def get_file_list(request, _user: SiteUser):
+    file_list = []
+    for _file in File.objects.filter(uploader=_user).order_by("-uploaded_at")[:6]:
+        file_list.append({"md5": _file.md5, "name": _file.filename})
+    return loader.render_to_string("Upload/file_list_widget.html", {"prefix": _user.nick_name, "file_list": file_list}, request)
 
 
 def get_user_link(request, _user: SiteUser):

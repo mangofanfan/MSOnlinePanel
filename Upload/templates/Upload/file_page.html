@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load site_url %}
+
+{% block title %}
+    查看文件 {{ file.name }}
+{% endblock %}
+
+{% block content %}
+    <img src="{% site_url 'upload/file/' file.md5 '/' %}" alt="{{ file.name }}" title='{{ file.name }}'>
+    <hr>
+    <h3>{{ file.name }}</h3>
+    <p>MD5：{{ file.md5 }}</p>
+    <p>上传者：<a href="{% site_url 'user/' file.uploader.id '/' %}">{{ file.uploader.nick_name }}</a></p>
+    <p>上传时间：{{ file.uploaded_at }}</p>
+{% endblock %}

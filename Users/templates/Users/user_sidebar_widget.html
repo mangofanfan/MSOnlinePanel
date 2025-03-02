@@ -1,7 +1,7 @@
 {% load site_url %}
 {# 这是专门放置于侧边栏的用户简要信息组件 #}
 
-<div class="sidebar-widget" style="text-align: center;">
+<div class="sidebar-widget" style="text-align: center; ">
     {% if nick_name %}
         <strong>欢迎回来，{{ nick_name }}</strong>
         <hr>
@@ -9,10 +9,26 @@
             {{ sign|safe }}
             <hr>
         {% endif %}
-        <a href="{% site_url 'user/' id '/' %}">用户页面</a> | <a href="{% site_url 'user/me' %}">用户中心</a>
+        <a href="{% site_url 'user/' id '/' %}">
+            <button class="btn btn-success card-btn">用户页面</button>
+        </a>
+        <a href="{% site_url 'user/me/' %}">
+            <button class="btn btn-outline-warning card-btn">用户中心</button>
+        </a>
+        <a href="{% site_url 'post/edit/' %}">
+            <button class="btn btn-outline-danger card-btn">发布文章</button>
+        </a>
+        <a href="{% site_url 'upload/' %}">
+            <button class="btn btn-info card-btn">上传文件</button>
+        </a>
     {% else %}
         <strong>未登录</strong>
         <hr>
-        <a href="{% site_url 'user/login/' %}">登录</a> | <a href="{% site_url 'user/signup/' %}">注册</a>
+        <a href="{% site_url 'user/login/' %}">
+            <button class="btn btn-success">登录</button>
+        </a>
+        <a href="{% site_url 'user/signup/' %}">
+            <button class="btn btn-outline-warning">注册</button>
+        </a>
     {% endif %}
 </div>

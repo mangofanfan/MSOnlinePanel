@@ -1,0 +1,14 @@
+{% load site_url %}
+<div class="sidebar-list-widget" style="padding-bottom: 0;">
+    <strong>{{ prefix }} 的最近上传文件：</strong>
+    <hr>
+    {% if file_list %}
+        <ul style="margin-bottom: 0;">
+        {% for file in file_list %}
+            <li><a href="{% site_url 'upload/' file.md5 '/' %}">{{ file.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p style="margin-bottom: 0;">这个人还没有上传过文件哦！</p>
+    {% endif %}
+</div>

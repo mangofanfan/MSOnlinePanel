@@ -1,0 +1,134 @@
+{% extends "structure.html" %}
+{% load site_url %}
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'MSOnlinePanel/vditor/vditor.css' %}"/>
+    <style>
+    .vditor-toolbar {
+        border-radius: 8px;
+    }
+    .vditor-content {
+        border-radius: 8px;
+    }
+    .vditor-ir {
+        border-radius: 8px;
+    }
+    .vditor-reset {
+        border-radius: 8px;
+    }
+    .vditor-preview__action {
+        display: none !important;
+    }
+    </style>
+{% endblock %}
+
+
+{% block title %}
+    文章编辑器
+{% endblock %}
+
+
+{% block global_page_top %}
+    编辑器正在开发中！
+{% endblock %}
+
+
+{% block main_body %}
+    <div class="row">
+        {# 编辑器 #}
+        <div class="col-xl-9 col-lg-8 col-md-12">
+            <div class="border-card" id="editor-content" style="min-height: 400px; background-color: ghostwhite;"></div>
+        </div>
+        {# 侧边栏 #}
+        <div class="col-xl-3 col-lg-4 col-md-12" style="text-align: center; ">
+            <div class="border-card" id="editor-content" style="background-color: ghostwhite; padding: 10px 2px 2px;">
+                <strong>文章操作</strong>
+                <form method="POST">
+                    {% csrf_token %}
+                    <p>编辑器暂不支持保存文章草稿，暂请自行备份您的文章草稿哦</p>
+                    <div class="input-group mb-3" title="为防止意外导致的重复发布，同一用户不允许发布同名文章。">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">标题？</span>
+                        </div>
+                        <input name="input-title" type="text" class="form-control" placeholder="今天发生了什么？" aria-label="title" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3" title="在此输入本文封面图片的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认占位图。">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">图像？</span>
+                        </div>
+                        <input name="input-image" type="text" class="form-control" placeholder="MD5" aria-label="image" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="alert alert-warning" id="warning-msg" style="display: none;">{{ msg }}</div>
+                    <button onclick="publishPost()" type="button" class="btn btn-success line-button">保存并发布</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block custom_js %}
+    <script src="{% static 'MSOnlinePanel/vditor/vditor.min.js' %}"></script>
+    <script>
+        let vditor = null;
+        const siteUrl = "{% site_url %}";
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        window.onload = function () { initVditor() };
+
+        function initVditor() {
+            vditor = new Vditor(document.getElementById('editor-content'), {
+                cache: {
+                    enable: false
+                },
+                mode: "ir",
+                upload: {
+                    url: "{% site_url 'upload/vditor/' %}",
+                    accept: ".jpg, .png, .jpeg,",
+                    headers: {
+                        "X-CSRFToken": csrfToken
+                    },
+                    success: function (_, data) {
+                        data = JSON.parse(data);
+                        let img_md_text = `![${data.filename}](${siteUrl}/upload/file/${data.md5}/)`;
+                        vditor.insertValue(img_md_text);
+                    }
+                }
+            });
+            vditor.setValue('{{ post.md_content }}');
+        }
+
+        function publishPost() {
+            let md_content =  vditor.getValue();
+            let _data = {
+                'md_content': md_content,
+                'title': document.getElementsByName('input-title')[0].value,
+                'image': document.getElementsByName('input-image')[0].value,
+            };
+            if (_data.title === ""){
+                document.getElementById("warning-msg").innerHTML = "请输入标题！";
+                document.getElementById("warning-msg").style.display = "block";
+                return;
+            }
+            fetch(`{% site_url 'post/edit/' %}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(_data),
+            })
+            .then(response => response.json())
+            .then(json_data => {
+                console.log(json_data);
+                if (json_data["status"] === "success") {
+                    window.location.href = "{% site_url 'post/post/' %}"+json_data["post_id"]+"/";
+                }
+                else if (json_data["status"] === "warning") {
+                    document.getElementById("warning-msg").innerHTML = json_data["msg"];
+                    document.getElementById("warning-msg").style.display = "block";
+                }
+            })
+        }
+    </script>
+{% endblock %}

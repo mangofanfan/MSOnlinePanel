@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load site_url %}
+{% load static %}
 
 {% block title %}
 {{ post.title }}
@@ -8,23 +10,37 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="display-4 text-center">{{ post.title }}</h1>
-    {% if post.author %}
-        <p class="text-center"><a href="http://localhost:8000/user/{{ post.author.id }}/">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}</p>
-    {% else %}
-        <p class="text-center">管理员 发布于 {{ post.post_time }}</p>
-    {% endif %}
+    <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <img src="{% if post.image %}{% site_url 'upload/file/' post.image.md5 '/' %}{% else %}{% static 'bg/lazy_mansui.jpg' %}{% endif %}" alt="{{ post.title }}" class="border-card" style="margin-top: -120px;">
+    </div>
+    <div class="col-lg-8 col-md-6 col-sm-12">
+        <h1 class="display-4 text-md-left text-sm-center">{{ post.title }}</h1>
+        {% if post.author %}
+            <p class="text-md-left text-sm-center"><a href="http://localhost:8000/user/{{ post.author.id }}/">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}</p>
+        {% else %}
+            <p class="text-md-left text-sm-center">管理员 发布于 {{ post.post_time }}</p>
+        {% endif %}
+    </div>
+    </div>
     <hr>
     <div>
         {% block post_begin_section %}
         {% endblock %}
     </div>
-    <div>
-        {{ post.content|safe }}
-    </div>
+    <div class="main-content" id="markdown-content">{{ post.content }}</div>
     <hr>
     <div>
         {% block post_end_section %}
         {% endblock %}
     </div>
+{% endblock %}
+
+{% block custom_css_1 %}
+	<style>
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+    </style>
 {% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    文件上传器
+{% endblock %}
+
+{% block global_page_top %}
+    文件上传暂时仅支持上传常规图片格式（jpg、png格式）的文件。
+{% endblock %}
+
+{% block content %}
+    <h1>文件上传器</h1>
+    {% if status %}
+        <div class="alert alert-{{ status }}" role="alert">
+            {{ msg|safe }}
+        </div>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data" style="text-align: center">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success" style="width: 100%;">上传</button>
+    </form>
+{% endblock %}

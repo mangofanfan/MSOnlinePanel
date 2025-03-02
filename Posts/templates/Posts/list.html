@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+{% load site_url %}
 
 {% block title %}
 文章与通知中心
@@ -6,21 +8,38 @@
 
 {% block content %}
     <h2 class="text-center">文章列表</h2>
-    <div class="d-flex row">
+    <div class="widget-list d-flex row">
         {% for post in posts %}
-            <div class="rounded-1 col-4" style="border-radius: 5px; background-color: rgba(84,255,229,0.2); padding: 20px 20px 6px; margin:4px;">
-                <h3>{{ post.title }}<a href="http://localhost:8000/post/post/{{ post.id }}/"><small>前往查看</small></a></h3>
-                <p>{{ post.author.nick_name }} 发布于 {{ post.post_time }}</p>
+            <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <div class="post-card rounded-1 border-card">
+                    <a href="{% site_url 'post/post/' post.id '/' %}">
+                        {% if post.image %}
+                            <img src="{% site_url 'upload/file/' post.image.md5 '/' %}" class="card-image" alt="{{ post.title }}">
+                        {% else %}
+                            <img src="{% static 'bg/lazy_mansui.jpg' %}" class="card-image" alt="{{ post.title }}">
+                        {% endif %}
+                    </a>
+                    <div class="post-card-title h3" title="{{ post.title }}">
+                        <a href="{% site_url 'post/post/' post.id '/' %}">{{ post.title }}</a>
+                    </div>
+                    <p class="post-card-text">
+                        <a href="{% site_url 'user/' post.author.id '/' %}">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}
+                    </p>
+                </div>
             </div>
         {% endfor %}
     </div>
     <hr>
     <h2 class="text-center">通知列表</h2>
-    <div class="d-flex row">
+    <div class="widget-list d-flex row">
         {% for notice in notices %}
-            <div class="rounded-1 col-4" style="border-radius: 5px; background-color: rgba(142,206,255,0.2); padding: 20px 20px 6px; margin:4px;">
-                <h3>{{ notice.title }}<a href="http://localhost:8000/post/notice/{{ notice.id }}/"><small>前往查看</small></a></h3>
-                <p>管理员 发布于 {{ notice.post_time }}</p>
+            <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <div class="post-card rounded-1 border-card">
+                    <div class="post-card-title h3" title="{{ notice.title }}">
+                        <a href="{% site_url 'post/notice/' post.id '/' %}">{{ notice.title }}</a>
+                    </div>
+                    <p class="post-card-text">管理员 发布于 {{ notice.post_time }}</p>
+                </div>
             </div>
         {% endfor %}
     </div>

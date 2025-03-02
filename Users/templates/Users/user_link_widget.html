@@ -1,9 +1,16 @@
 {# 这是放置于用户中心的侧边栏的链接组件 #}
 
 {% load site_url %}
-<div class="sidebar-widget">
-    <strong>{{ prefix }} 用户链接</strong>
-    <ul>
-        <li><a href="{% site_url 'user/' id '/' %}">用户页面</a></li>
-    </ul>
+<div class="sidebar-widget" style="padding-bottom: 0;">
+    <strong>{{ prefix }} 的用户链接：</strong>
+    <hr>
+    <a href="{% site_url 'user/' id '/' %}">
+        <button type="button" class="btn btn-success card-btn">用户页面</button>
+    </a>
+    <a href="{% site_url 'post/edit/' %}">
+        <button type="button" class="btn btn-outline-warning card-btn">发布文章</button>
+    </a>
+    <a href="{% site_url 'upload/' %}">
+        <button type="button" class="btn btn-outline-primary card-btn">上传文件</button>
+    </a>
 </div>

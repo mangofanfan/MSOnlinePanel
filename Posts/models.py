@@ -1,5 +1,6 @@
 from django.db import models
 
+from Upload.models import File
 from Users.models import SiteUser
 
 
@@ -10,6 +11,8 @@ class Post(models.Model):
     author = models.ForeignKey(SiteUser, on_delete=models.CASCADE, verbose_name="文章作者")
     post_time = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
     update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    is_markdown = models.BooleanField(verbose_name="Markdown内容")
+    image = models.ForeignKey(File, on_delete=models.DO_NOTHING, verbose_name="封面图像", null=True, blank=True)
 
     def __str__(self):
         return f"[ {self.id} {self.author.__str__()} 的文章 {self.title} ]"
@@ -25,6 +28,7 @@ class Notice(models.Model):
     content = models.TextField(verbose_name="通知内容")
     post_time = models.DateTimeField(auto_now_add=True, verbose_name="发布时间")
     update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    is_markdown = models.BooleanField(verbose_name="Markdown内容")
 
     def __str__(self):
         return f"[ 通知 {self.id} {self.title} ]"

@@ -1,8 +1,14 @@
-<div class="post-list-widget">
-    <strong>{{ prefix }} 文章列表：</strong>
-    <ul>
+{% load site_url %}
+<div class="sidebar-list-widget" style="padding-bottom: 0;">
+    <strong>{{ prefix }} 的最近文章列表：</strong>
+    <hr>
+    {% if post_list %}
+        <ul style="margin-bottom: 0;">
         {% for post in post_list %}
-            <li><a href="http://localhost:8000/post/post/{{ post.id }}/">{{ post.title }}</a></li>
+            <li><a href="{% site_url 'post/post/' post.id '/' %}/">{{ post.title }}</a></li>
         {% endfor %}
-    </ul>
+        </ul>
+    {% else %}
+        <p style="margin-bottom: 0;">这个人还没有写过文章哦！</p>
+    {% endif %}
 </div>
