@@ -37,10 +37,12 @@ def notice(request, input_id):
 
 
 def post_list(request):
-    posts = Post.objects.all().order_by("-post_time")
-    notices = Notice.objects.all().order_by("-post_time")
+    posts = Post.objects.all().order_by("-post_time")[:12]
+    files = File.objects.all().order_by("-uploaded_at")[:18]
+    notices = Notice.objects.all().order_by("-post_time")[:6]
     context = {
         "posts": posts,
+        "files": files,
         "notices": notices,
     }
     return render(request, "Posts/list.html", context)

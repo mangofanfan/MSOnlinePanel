@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load site_url %}
 
 {% block title %}
@@ -6,10 +7,13 @@
 {% endblock %}
 
 {% block global_page_top %}
+    <img src="{% if not user.cover_image %}{% static 'bg/lazy_mansui.jpg' %}{% else %}{% site_url 'upload/file/' user.cover_image '/' %}{% endif %}" class="border-card" style="width: 100%; height: 200px; object-fit: cover; margin-top: -200px; margin-bottom: 0;" alt="">
     {% if not user.value_P %}
-    	<div class="alert alert-info" style="margin-bottom: 0;">
-            暂时还没有数据哦，为什么不先四处逛逛呢？
-            <button type="button" class="btn btn-outline-info">联系我们</button>
+    	<div class="alert alert-info text-center" style="margin-bottom: 20px;">
+            您可以在这里管理与您有关的数据的授权情况。
+            <a href="{% site_url 'chat/' %}">
+                <button type="button" class="btn btn-outline-info">管理数据</button>
+            </a>
         </div>
     {% endif %}
 {% endblock %}
@@ -39,10 +43,11 @@
                         {% csrf_token %}
                         <p>用户ID：{{ user.id }}</p>
                         <p>校内学号：{{ user.student_number }}</p>
-                        <div class="form-inline">
-                            <label class="form-check-label d-inline-block">
-                            昵称：<input name="nick_name" value="{{ user.nick_name }}" class="form-control d-inline-block" type="text">
-                            </label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">昵称</span>
+                            </div>
+                            <input name="nick_name" value="{{ user.nick_name }}" class="form-control d-inline-block" type="text" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <p>姓名：{{ user.rel_name }}</p>
                         <p>联系方式：{{ user.phone_number }}</p>
@@ -52,8 +57,8 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12" style="margin-top: 20px;">
-            <div class="rounded-1 border-card" id="UserSign" style="background-color: honeydew; border-radius: 5px; padding: 10px;">
-                <h4 style="padding-top: 10px; padding-left: 10px;">个性签名</h4>
+            <div class="rounded-1 border-card" id="UserSign" style="background-color: floralwhite; border-radius: 5px; padding: 10px;">
+                <h4 style="padding-top: 10px; padding-left: 10px;">个人签名</h4>
                 <hr>
                 <div style="padding: 0 10px 10px;">
                     <form action="{% site_url 'user/me/' %}" method="post">
@@ -69,5 +74,32 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12" style="margin-top: 20px;">
+            <div class="rounded-1 border-card" id="UserSign" style="background-color: honeydew; border-radius: 5px; padding: 10px;">
+                <h4 style="padding-top: 10px; padding-left: 10px;">个性化</h4>
+                <hr>
+                <div style="padding: 0 10px 10px;">
+                    <form action="{% site_url 'user/me/' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3" title="填入用户封面图像的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认占位图。">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">封面？</span>
+                            </div>
+                            <input name="cover_image" value="{{ user.cover_image }}" class="form-control d-inline-block" type="text" aria-label="CoverImage" aria-describedby="basic-addon1">
+                        </div>
+                        <input type="submit" class="btn btn-outline-success" value="更新个性化" style="margin-top: 10px;">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl, option)
+        })
+    </script>
 {% endblock %}

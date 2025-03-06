@@ -9,10 +9,12 @@
     <link rel="icon" type="image/x-icon" href="{% static '/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'MSOnlinePanel/bootstrap/css/bootstrap.min.css' %}">
     <script src="{% static 'MSOnlinePanel/bootstrap/jquery.js' %}"></script>
+    <script src="{% static 'MSOnlinePanel/bootstrap/popper.js' %}"></script>
     <script src="{% static 'MSOnlinePanel/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'MSOnlinePanel/mark/marked.min.js' %}"></script>
     <style>
         body {
+            background-color: aliceblue;
             background-image: url("{% static '/bg/background_122474271_p0.jpg' %}");
             background-repeat: no-repeat;
             background-attachment: scroll;
@@ -29,6 +31,7 @@
         a {
             text-decoration: none;
             color: grey;
+            transition: all 0.3s;
         }
         a:hover {
             text-decoration: none;
@@ -44,6 +47,17 @@
         }
         .nav-custom-link:hover {
             color: navy;
+        }
+        .navbar-dropdown-menu {
+            background-color: rgba(186, 221, 255, 0.75);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .float-box {
+            transition: all 0.3s;
+        }
+        .float-box:hover {
+            transform: translateY(-6px);
         }
         .line-button {
             width: 90%;
@@ -87,10 +101,18 @@
          }
         .card-image {
             width: 100%;
+            height: 156px;
+            object-fit: cover;
             border-radius: 8px;
         }
         .card-btn {
             margin-top: 4px;
+        }
+        .site-icon {
+            width: 30px;
+        }
+        .toast.show {
+            opacity: 0.8;
         }
 
         @media (max-width: 767px) {
@@ -113,12 +135,12 @@
     {% block custom_css %}
     {% endblock %}
 </head>
-<body style="background-color: aliceblue; ">
+<body>
 <header>
     <!-- 网站的页眉部分 -->
     <nav class="border-card nav navbar-expand-md bg-light fixed-top" style="margin: 2px; padding: 5px; border-radius: 8px; background-color: rgba(247,252,255,0.5) !important; z-index: 2;" id="navbar-top">
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#globalNavbar" aria-controls="#globalNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="xicon-container btn-toggle-menus"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width: 20px; height: 20px; font-size: 20px; color: inherit;"><circle cx="16" cy="8" r="2" fill="currentColor"></circle><circle cx="16" cy="16" r="2" fill="currentColor"></circle><circle cx="16" cy="24" r="2" fill="currentColor"></circle></svg></span>
         </button>
         <a class="navbar-brand nav-custom-link" href="{% site_url %}">
             <img src="{% static 'favicon.svg' %}" alt="Logo" width="30" height="30" style="width: unset;">
@@ -127,7 +149,7 @@
         <div class="collapse navbar-collapse" id="globalNavbar" style="padding-right: 10px;">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link nav-custom-link" href="{% site_url 'post/' %}">文章动态</a>
+                    <a class="nav-link nav-custom-link" href="{% site_url 'post/' %}">最近动态</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link nav-custom-link" href="{% site_url 'about/' %}">关于我们</a>
@@ -136,8 +158,12 @@
                     <li class="nav-item">
                         <a class="nav-link nav-custom-link" href="{% site_url 'user/me/' %}">{{ request.session.login_user_name }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-custom-link" href="{% site_url 'post/edit/' %}">发布文章</a>
+                    <li class="nav-item dropdown show">
+                        <a class="nav-link nav-custom-link dropdown-toggle" href="#" id="dropdownNavbarLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">创作</a>
+                        <div class="dropdown-menu navbar-dropdown-menu" aria-labelledby="dropdownNavbarLink">
+                            <a class="dropdown-item nav-custom-link" href="{% site_url 'post/edit/' %}">发布文章</a>
+                            <a class="dropdown-item nav-custom-link" href="{% site_url 'upload/' %}">上传文件</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-custom-link" href="{% site_url 'user/logout/' %}">登出</a>
@@ -152,7 +178,6 @@
                 {% endif %}
             </ul>
         </div>
-
     </nav>
 </header>
 
@@ -160,10 +185,14 @@
     <!-- 页面的主要内容 -->
     <div class="main-container container" style="margin-bottom: 100px;">
         {% if global_page_top %}
-            <div class="container-md rounded-1 border border-card" style="background-color: ghostwhite; border-radius: 10px; margin-bottom: 20px; padding: 10px; text-align: center;">
+            {% if not global_page_top_without_border %}
+                <div class="container-md rounded-1 border border-card" style="background-color: ghostwhite; border-radius: 10px; margin-bottom: 20px; padding: 10px; text-align: center;">
+            {% endif %}
                 {% block global_page_top %}
                 {% endblock %}
-            </div>
+            {% if not global_page_top_without_border %}
+                </div>
+            {% endif %}
         {% endif %}
 
         {# 页面的主要内容！ #}
@@ -202,14 +231,27 @@
     </div>
 </footer>
 
-{% block custom_js %}
+<section class="toast-container fixed-bottom" id="toast-container" style="z-index: 1; margin-bottom: 80px; text-align: center;">
+</section>
+
+{% block addon_toast %}
 {% endblock %}
-{% if is_markdown_content %}
+
+{% block custom_js %}
     <script type="text/javascript">
-        document.getElementById("markdown-content").innerHTML
-            = marked.parse(document.getElementById("markdown-content").innerHTML);
+        function renderMarkdown() {
+            let list = document.getElementsByClassName("markdown-content")
+            let i;
+            for (i = 0; i < list.length; i++) {
+                list[i].innerHTML = marked.parse(list[i].innerHTML)
+                list[i].classList.remove("markdown-content")
+            }
+            console.log("完成渲染页面中的 Markdown 内容。")
+        }
     </script>
-{% endif %}
+    {% block custom_js_1 %}
+    {% endblock %}
+{% endblock %}
 
 </body>
 </html>

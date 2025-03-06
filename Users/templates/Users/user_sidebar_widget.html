@@ -1,10 +1,11 @@
+{% load static %}
 {% load site_url %}
 {# 这是专门放置于侧边栏的用户简要信息组件 #}
 
 <div class="sidebar-widget" style="text-align: center; ">
     {% if nick_name %}
-        <strong>欢迎回来，{{ nick_name }}</strong>
-        <hr>
+        <img src="{% site_url 'upload/file/' cover_image '/' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        <strong>欢迎回来，{{ nick_name }}</strong><br>
         {% if sign %}
             {{ sign|safe }}
             <hr>
@@ -22,6 +23,7 @@
             <button class="btn btn-info card-btn">上传文件</button>
         </a>
     {% else %}
+        <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
         <strong>未登录</strong>
         <hr>
         <a href="{% site_url 'user/login/' %}">

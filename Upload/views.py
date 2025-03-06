@@ -35,7 +35,7 @@ def upload(request):
         if form.is_valid():
             md5, filename = handle_upload_file(request, request.FILES.get('file'))
             context["status"] = "success"
-            context["msg"] = f"文件 <a href='/upload/{md5}/'>{filename}</a> 上传成功。"
+            context["msg"] = f"文件 <a href='/upload/{md5}/'>{filename}</a> 上传成功，MD5：{md5}。<button class='btn btn-success' onClick='copyMd5(\"{md5}\")'>点击复制</button>"
             return render(request, "Upload/upload.html", context)
     else:
         return render(request, "Upload/upload.html", context)

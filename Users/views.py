@@ -1,7 +1,8 @@
+import json
 from datetime import datetime
 
 from django.db import IntegrityError
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 
@@ -27,6 +28,7 @@ def user(request, input_id):
                 "register_time": _user.register_time,
                 "login_time": _user.login_time,
                 "sign": _user.sign,
+                "cover_image": _user.cover_image,
             },
             "sidebars":
                 [
@@ -66,24 +68,21 @@ def signup(request):
 
 def login(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            student_number = request.POST.get('student_number')
-            password = request.POST.get('password')
-            try:
-                _user = SiteUser.objects.get(student_number=student_number)
-            except SiteUser.DoesNotExist:
-                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的学号尚未注册。", "global_page_top": True})
-            if _user.password == password:
-                # 登录成功，跳转到用户中心
-                request.session["login_user_id"] = _user.id
-                request.session["login_user_name"] = _user.nick_name
-                _user.save()
-                return redirect("/user/me/")
-            else:
-                return render(request, "Users/user_login.html", {"form": form, "msg": "输入的密码错误。", "global_page_top": True})
+        data = json.loads(request.body.decode())
+        student_number = data.get('student_number')
+        password = data.get('password')
+        try:
+            _user = SiteUser.objects.get(student_number=student_number)
+        except SiteUser.DoesNotExist:
+            return JsonResponse({"status": "error", "msg": "输入的账号尚未注册。"})
+        if _user.password == password:
+            # 登录成功，跳转到用户中心
+            request.session["login_user_id"] = _user.id
+            request.session["login_user_name"] = _user.nick_name
+            _user.save()
+            return JsonResponse({"status": "success"})
         else:
-            return render(request, "Users/user_login.html", {"form": form, "msg": "表单数据格式验证失败，请重新填写再提交！", "global_page_top": True})
+            return JsonResponse({"status": "error", "msg": "输入的密码错误。"})
     else:
         if request.session.get("login_user_id") is None:
             form = LoginForm()
@@ -94,10 +93,11 @@ def login(request):
 
 def logout(request):
     if request.method == 'POST':
+        # return JsonResponse({"status": "error"})
         for _name in ["login_user_id", "login_user_name"]:
             try: del request.session[_name]
             except KeyError: pass
-        return redirect(SITE_URL)
+        return JsonResponse({"status": "success"})
     else:
         return render(request, "Users/user_logout.html", {"global_page_top": True})
 
@@ -118,6 +118,7 @@ def me(request):
                 "login_time": _user.login_time,
                 "value_P": _user.value_P,
                 "sign": _user.sign,
+                "cover_image": _user.cover_image,
             },
         "sidebars":
             [
@@ -126,6 +127,7 @@ def me(request):
                 get_file_list(request, _user),
             ],
         "global_page_top": True,
+        "global_page_top_without_border": True,
     }
 
     if request.method == "POST":
@@ -133,6 +135,8 @@ def me(request):
         try: _dict["nick_name"] = request.POST.get("nick_name")
         except KeyError: pass
         try: _dict["sign"] = request.POST.get("sign")
+        except KeyError: pass
+        try: _dict["cover_image"] = request.POST.get("cover_image")
         except KeyError: pass
         if not _dict:
             context["success"] = False

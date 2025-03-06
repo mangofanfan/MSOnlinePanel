@@ -16,6 +16,73 @@
     </div>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">注销登录状态</button>
+        <button type="button" class="btn btn-primary" onclick="logout()">注销登录状态</button>
     </form>
+{% endblock %}
+
+{% block addon_toast %}
+    <div class="toast bg-success" id="logout-message" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
+            <strong class="me-auto">注销登录状态成功</strong>
+        </div>
+        <div class="toast-body">
+            即将返回智心首页...
+        </div>
+    </div>
+    <div class="toast bg-warning" id="error-message" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
+            <strong class="me-auto">注销登录状态失败</strong>
+        </div>
+        <div class="toast-body">
+            这可能不是您的问题，请稍后重试...
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_1 %}
+	<script>
+        const option = {
+            autohide: true,
+            delay: 6000,
+        }
+        let toastEl1 = document.getElementById('logout-message');
+        toastEl1.remove();
+        document.getElementById("toast-container").appendChild(toastEl1);
+        let toastEl2 = document.getElementById('error-message');
+        toastEl2.remove();
+        document.getElementById("toast-container").appendChild(toastEl2);
+        function showLogoutMessage() {
+            let toast = new bootstrap.Toast(toastEl1, option)
+            toast.show();
+        }
+        function showErrorMessage() {
+            let toast = new bootstrap.Toast(toastEl2, option)
+            toast.show();
+        }
+
+        const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        function logout() {
+            fetch('/user/logout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then((response) => {return response.json();})
+            .then((data) => {
+                if (data.status === "success") {
+                    showLogoutMessage();
+                    setTimeout(function () {
+                        window.location.href = '/';
+                    }, 3000);
+                }
+                else {
+                    showErrorMessage();
+                }
+            })
+        }
+    </script>
 {% endblock %}

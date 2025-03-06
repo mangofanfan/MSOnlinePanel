@@ -7,16 +7,16 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="text-center">文章列表</h2>
+    <h2 class="text-center">最近文章</h2>
     <div class="widget-list d-flex row">
         {% for post in posts %}
             <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <div class="post-card rounded-1 border-card">
+                <div class="float-box post-card rounded-1 border-card">
                     <a href="{% site_url 'post/post/' post.id '/' %}">
                         {% if post.image %}
                             <img src="{% site_url 'upload/file/' post.image.md5 '/' %}" class="card-image" alt="{{ post.title }}">
                         {% else %}
-                            <img src="{% static 'bg/lazy_mansui.jpg' %}" class="card-image" alt="{{ post.title }}">
+                            <img src="{% static 'bg/loading.png' %}" class="card-image" alt="{{ post.title }}">
                         {% endif %}
                     </a>
                     <div class="post-card-title h3" title="{{ post.title }}">
@@ -30,13 +30,32 @@
         {% endfor %}
     </div>
     <hr>
-    <h2 class="text-center">通知列表</h2>
+    <h2 class="text-center">最近文件</h2>
+    <div class="widget-list d-flex row">
+        {% for file in files %}
+            <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <div class="float-box post-card rounded-1 border-card">
+                    <a href="{% site_url 'upload/' file.md5 '/' %}">
+                        <img src="{% site_url 'upload/file/' file.md5 '/' %}" title = "{{ file.filename }}" class="card-image" alt="{{ file.filename }}">
+                    </a>
+                    <div class="post-card-title h3" title="{{ file.filename }}">
+                        <a href="{% site_url 'upload/' file.md5 '/' %}">{{ file.filename }}</a>
+                    </div>
+                    <p class="post-card-text">
+                        <a href="{% site_url 'user/' file.uploader.id '/' %}">{{ file.uploader.nick_name }}</a> 上传于 {{ file.uploaded_at }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <h2 class="text-center">最近通知</h2>
     <div class="widget-list d-flex row">
         {% for notice in notices %}
             <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <div class="post-card rounded-1 border-card">
+                <div class="float-box post-card rounded-1 border-card">
                     <div class="post-card-title h3" title="{{ notice.title }}">
-                        <a href="{% site_url 'post/notice/' post.id '/' %}">{{ notice.title }}</a>
+                        <a href="{% site_url 'post/notice/' notice.id '/' %}">{{ notice.title }}</a>
                     </div>
                     <p class="post-card-text">管理员 发布于 {{ notice.post_time }}</p>
                 </div>

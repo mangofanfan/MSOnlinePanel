@@ -22,6 +22,7 @@ def index(request):
             "id": _user.id,
             "nick_name": _user.nick_name,
             "sign": _user.sign,
+            "cover_image": _user.cover_image,
         }
     context["sidebars"].append(render_to_string("Users/user_sidebar_widget.html", context_user, request))
     return render(request, "MSOnlinePanel/index.html", context)

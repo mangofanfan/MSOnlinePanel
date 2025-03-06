@@ -12,15 +12,82 @@
 
 {% block user_page_content %}
     <h1 class="display-4">用户登录</h1>
-    {% if msg %}
-        <div class="alert alert-warning" role="alert">
-            登录失败：{{ msg }}
-        </div>
-    {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">登录</button>
-        <a href="{% site_url 'user/signup/' %}"><button type="button" class="btn btn-outline-success">注册</button></a>
+        <button type="button" class="btn btn-primary" onclick="login()">登录</button>
+        <a href="/user/signup/"><button type="button" class="btn btn-outline-success">注册</button></a>
     </form>
+{% endblock %}
+
+{% block addon_toast %}
+    <div class="toast bg-success" id="login-message" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
+            <strong class="me-auto">登录成功！</strong>
+        </div>
+        <div class="toast-body">
+            即将进入用户中心...
+        </div>
+    </div>
+    <div class="toast bg-warning" id="error-message" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
+            <strong class="me-auto">登录失败</strong>
+        </div>
+        <div class="toast-body" id="error-message-msg">
+            未知原因，请重新尝试...
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_1 %}
+    <script>
+        const option = {
+            autohide: true,
+            delay: 6000,
+        }
+        let toastEl1 = document.getElementById('login-message');
+        toastEl1.remove();
+        document.getElementById("toast-container").appendChild(toastEl1);
+        let toastEl2 = document.getElementById('error-message');
+        toastEl2.remove();
+        document.getElementById("toast-container").appendChild(toastEl2);
+        function showLogoutMessage() {
+            let toast = new bootstrap.Toast(toastEl1, option)
+            toast.show();
+        }
+        function showErrorMessage() {
+            let toast = new bootstrap.Toast(toastEl2, option)
+            toast.show();
+        }
+
+        const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        function login() {
+            fetch('/user/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    'student_number': document.getElementsByName("student_number")[0].value,
+                    'password': document.getElementsByName("password")[0].value,
+                })
+            })
+                .then((response) => {return response.json();})
+                .then((data) => {
+                    if (data.status === "success") {
+                        showLogoutMessage();
+                        setTimeout(function () {
+                            window.location.href = '/user/me/';
+                        }, 3000);
+                    }
+                    else {
+                        document.getElementById('error-message-msg').innerHTML = data.msg;
+                        showErrorMessage();
+                    }
+                })
+        }
+    </script>
 {% endblock %}

@@ -9,7 +9,16 @@
     <img src="{% site_url 'upload/file/' file.md5 '/' %}" alt="{{ file.name }}" title='{{ file.name }}'>
     <hr>
     <h3>{{ file.name }}</h3>
-    <p>MD5：{{ file.md5 }}</p>
+    <p>MD5：<p id="md5">{{ file.md5 }}</p><button class="btn btn-primary" onclick="copyMd5('{{ file.md5 }}')">复制MD5</button></p>
     <p>上传者：<a href="{% site_url 'user/' file.uploader.id '/' %}">{{ file.uploader.nick_name }}</a></p>
     <p>上传时间：{{ file.uploaded_at }}</p>
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+        function copyMd5(md5) {
+            navigator.clipboard.writeText(md5);
+            console.log("已经将文件的MD5复制到剪切板：", md5);
+        }
+    </script>
 {% endblock %}

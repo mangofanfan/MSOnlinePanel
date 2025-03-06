@@ -83,7 +83,7 @@
                 },
                 mode: "ir",
                 upload: {
-                    url: "{% site_url 'upload/vditor/' %}",
+                    url: "upload/vditor/",
                     accept: ".jpg, .png, .jpeg,",
                     headers: {
                         "X-CSRFToken": csrfToken
@@ -110,7 +110,7 @@
                 document.getElementById("warning-msg").style.display = "block";
                 return;
             }
-            fetch(`{% site_url 'post/edit/' %}`, {
+            fetch("/post/edit/", {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': csrfToken,
