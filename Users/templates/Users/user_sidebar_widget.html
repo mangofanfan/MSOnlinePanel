@@ -4,7 +4,11 @@
 
 <div class="sidebar-widget" style="text-align: center; ">
     {% if nick_name %}
-        <img src="{% site_url 'upload/file/' cover_image '/' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        {% if cover_image == None %}
+            <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        {% else %}
+            <img src="{% site_url 'upload/file/' cover_image '/' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        {% endif %}
         <strong>欢迎回来，{{ nick_name }}</strong><br>
         {% if sign %}
             {{ sign|safe }}

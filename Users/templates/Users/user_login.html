@@ -21,24 +21,8 @@
 {% endblock %}
 
 {% block addon_toast %}
-    <div class="toast bg-success" id="login-message" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
-            <strong class="me-auto">登录成功！</strong>
-        </div>
-        <div class="toast-body">
-            即将进入用户中心...
-        </div>
-    </div>
-    <div class="toast bg-warning" id="error-message" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
-            <strong class="me-auto">登录失败</strong>
-        </div>
-        <div class="toast-body" id="error-message-msg">
-            未知原因，请重新尝试...
-        </div>
-    </div>
+    {% include 'toast.html' with class='bg-success' id='login-message' header='登录成功！' content='即将进入用户中心...' %}
+    {% include 'toast.html' with class='bg-warning' id='error-message' header='登录失败' content='未知原因，请重新尝试...' %}
 {% endblock %}
 
 {% block custom_js_1 %}

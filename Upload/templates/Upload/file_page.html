@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load site_url %}
 
 {% block title %}
@@ -9,16 +10,32 @@
     <img src="{% site_url 'upload/file/' file.md5 '/' %}" alt="{{ file.name }}" title='{{ file.name }}'>
     <hr>
     <h3>{{ file.name }}</h3>
-    <p>MD5：<p id="md5">{{ file.md5 }}</p><button class="btn btn-primary" onclick="copyMd5('{{ file.md5 }}')">复制MD5</button></p>
     <p>上传者：<a href="{% site_url 'user/' file.uploader.id '/' %}">{{ file.uploader.nick_name }}</a></p>
     <p>上传时间：{{ file.uploaded_at }}</p>
+    <hr>
+    <p>MD5：<code id="md5">{{ file.md5 }}</code></p>
+    <p>文章编辑器支持Markdown语法，您可以这样引用这张图片：<code id="editor-md5">![{{ file.name }}]({% site_url 'upload/file/' file.md5 '/' %})</code></p>
+    <button class="btn btn-primary" onclick="copy('{{ file.md5 }}')">只复制MD5</button>
+    <button class="btn btn-primary" onclick="copy('![{{ file.name }}]({% site_url 'upload/file/' file.md5 '/' %})')">复制Markdown</button>
 {% endblock %}
 
-{% block custom_js %}
+{% block addon_toast %}
+    {% include 'toast.html' with class='bg-primary' id='copy-message' header='选中的文本已经复制' content='您现在可以在任意位置粘贴。' %}
+{% endblock %}
+
+{% block custom_js_2 %}
     <script>
-        function copyMd5(md5) {
-            navigator.clipboard.writeText(md5);
-            console.log("已经将文件的MD5复制到剪切板：", md5);
+        let toastEl = document.getElementById('copy-message');
+        toastEl.remove();
+        document.getElementById("toast-container").appendChild(toastEl);
+        function showCopyMessage() {
+            let toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+        function copy(text) {
+            navigator.clipboard.writeText(text);
+            console.log("已经将文件的MD5复制到剪切板：", text);
+            showCopyMessage();
         }
     </script>
 {% endblock %}

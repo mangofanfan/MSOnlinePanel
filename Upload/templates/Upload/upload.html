@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     文件上传器
@@ -10,24 +11,66 @@
 
 {% block content %}
     <h1>文件上传器</h1>
-    {% if status %}
-        <div class="alert alert-{{ status }}" role="alert">
-            {{ msg|safe }}
-        </div>
-    {% endif %}
     <form method="POST" enctype="multipart/form-data" style="text-align: center">
         {% csrf_token %}
         {{ form.as_p }}
         <p>上传完毕后，您会获得所上传的文件的MD5（长度32的字符串），您可以使用该MD5引用您的文件，例如在编辑器中插入图像。</p>
-        <button type="submit" class="btn btn-success" style="width: 100%;">上传</button>
+        <button type="button" class="btn btn-success" style="width: 100%;" onclick="upload()">上传</button>
     </form>
 {% endblock %}
 
-{% block custom_js %}
+{% block addon_toast %}
+    {% include 'toast.html' with class='bg-success' id='upload-message' header='文件上传成功！' content='即将跳转到文件页面...' %}
+    {% include 'toast.html' with class='bg-warning' id='error-message' header='文件上传失败' content='未知原因，请重新尝试' %}
+{% endblock %}
+
+{% block custom_js_2 %}
     <script>
-        function copyMd5(md5) {
-            navigator.clipboard.writeText(md5);
-            console.log("已经将文件的MD5复制到剪切板：", md5);
+        const option = {
+            autohide: true,
+            delay: 6000,
+        }
+        let toastEl1 = document.getElementById('upload-message');
+        toastEl1.remove();
+        document.getElementById("toast-container").appendChild(toastEl1);
+        let toastEl2 = document.getElementById('error-message');
+        toastEl2.remove();
+        document.getElementById("toast-container").appendChild(toastEl2);
+        function showLogoutMessage() {
+            let toast = new bootstrap.Toast(toastEl1, option)
+            toast.show();
+        }
+        function showErrorMessage() {
+            let toast = new bootstrap.Toast(toastEl2, option)
+            toast.show();
+        }
+
+        const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        function upload() {
+            let formData = new FormData();
+            formData.append('file', document.getElementsByName('file')[0].files[0]);
+            fetch('/upload/', {
+                method: 'POST',
+                headers: {
+                    //'Content-Type': 'multipart/form-data',
+                    'X-CSRFToken': csrfToken
+                },
+                body: formData,
+
+            })
+                .then((response) => {return response.json();})
+                .then((data) => {
+                    if (data.status === "success") {
+                        showLogoutMessage();
+                        setTimeout(function () {
+                            window.location.href = `/upload/${data.md5}/`;
+                        }, 3000);
+                    }
+                    else {
+                        document.getElementById('error-message-msg').innerHTML = data.msg;
+                        showErrorMessage();
+                    }
+                })
         }
     </script>
 {% endblock %}

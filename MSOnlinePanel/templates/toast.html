@@ -1,0 +1,11 @@
+{% load static %}
+{# Toast #}
+<div class="toast {{ class }}" id="{{ id }}" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <img src="{% static 'favicon.svg' %}" class="rounded me-2 site-icon" alt="...">
+        <strong class="me-auto">{{ header }}</strong>
+    </div>
+    <div class="toast-body" id="{{ id }}-msg">
+        {{ content }}
+    </div>
+</div>

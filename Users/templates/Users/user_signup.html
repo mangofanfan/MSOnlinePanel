@@ -12,19 +12,69 @@
 
 {% block user_page_content %}
     <h1 class="display-4">新用户注册</h1>
-    {% if signup_success %}
-        <div class="alert alert-success" role="alert">
-            注册成功，现在您可以前往登录~
-        </div>
-    {% elif msg %}
-        <div class="alert alert-warning" role="alert">
-            注册失败：{{ msg }}
-        </div>
-    {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">注册</button>
+        <button type="button" class="btn btn-primary" onclick="signup()">注册</button>
         <a href="{% site_url 'user/login/' %}"><button type="button" class="btn btn-outline-success">登录</button></a>
     </form>
+{% endblock %}
+
+{% block addon_toast %}
+    {% include 'toast.html' with class='bg-success' id='signup-message' header='用户已注册' content='即将进入登录页面...' %}
+    {% include 'toast.html' with class='bg-warning' id='error-message' header='注册失败' content='未知原因，请重新尝试...' %}
+{% endblock %}
+
+{% block custom_js_1 %}
+    <script>
+        const option = {
+            autohide: true,
+            delay: 6000,
+        }
+        let toastEl1 = document.getElementById('signup-message');
+        toastEl1.remove();
+        document.getElementById("toast-container").appendChild(toastEl1);
+        let toastEl2 = document.getElementById('error-message');
+        toastEl2.remove();
+        document.getElementById("toast-container").appendChild(toastEl2);
+        function showSignupMessage() {
+            let toast = new bootstrap.Toast(toastEl1, option)
+            toast.show();
+        }
+        function showErrorMessage() {
+            let toast = new bootstrap.Toast(toastEl2, option)
+            toast.show();
+        }
+
+        const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        function signup() {
+            fetch('/user/signup/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    'nick_name': document.getElementsByName('nick_name')[0].value,
+                    'rel_name': document.getElementsByName('rel_name')[0].value,
+                    'phone_number': document.getElementsByName('phone_number')[0].value,
+                    'student_number': document.getElementsByName("student_number")[0].value,
+                    'password': document.getElementsByName("password")[0].value,
+                })
+            })
+                .then((response) => {return response.json();})
+                .then((data) => {
+                    if (data.status === "success") {
+                        showSignupMessage();
+                        setTimeout(function () {
+                            window.location.href = '/user/login/';
+                        }, 3000);
+                    }
+                    else {
+                        document.getElementById('error-message-msg').innerHTML = data.msg;
+                        showErrorMessage();
+                    }
+                })
+        }
+    </script>
 {% endblock %}

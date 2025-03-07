@@ -43,24 +43,21 @@ def user(request, input_id):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            nick_name = request.POST.get('nick_name')
-            rel_name = request.POST.get('rel_name')
-            phone_number = request.POST.get('phone_number')
-            student_number = request.POST.get('student_number')
-            password = request.POST.get('password')
-            try:
-                SiteUser.objects.create(nick_name=nick_name,
-                                        rel_name=rel_name,
-                                        phone_number=phone_number,
-                                        student_number=student_number,
-                                        password=password)
-                return render(request, "Users/user_signup.html", {"form": form, "signup_success": True, "global_page_top": True})
-            except IntegrityError:
-                return render(request, "Users/user_signup.html", {"form": form, "msg": "学号已经被占用，请尝试与平台管理员联系。", "global_page_top": True})
-        else:
-            return render(request, 'Users/user_signup.html', {'form': form, "msg": "表单数据格式验证失败，请重新填写再提交！", "global_page_top": True})
+        data = json.loads(request.body.decode())
+        nick_name = data.get('nick_name')
+        rel_name = data.get('rel_name')
+        phone_number = data.get('phone_number')
+        student_number = data.get('student_number')
+        password = data.get('password')
+        try:
+            SiteUser.objects.create(nick_name=nick_name,
+                                    rel_name=rel_name,
+                                    phone_number=phone_number,
+                                    student_number=student_number,
+                                    password=password)
+            return JsonResponse({"status": "success"})
+        except IntegrityError:
+            return JsonResponse({"status": "error", "msg": "学号已被占用，请尝试与学校联系。"})
     else:
         form = SignUpForm()
         return render(request, 'Users/user_signup.html', {'form': form, "global_page_top": True})

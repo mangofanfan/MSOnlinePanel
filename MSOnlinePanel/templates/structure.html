@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'MSOnlinePanel/bootstrap/css/bootstrap.min.css' %}">
     <script src="{% static 'MSOnlinePanel/bootstrap/jquery.js' %}"></script>
     <script src="{% static 'MSOnlinePanel/bootstrap/popper.js' %}"></script>
-    <script src="{% static 'MSOnlinePanel/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'MSOnlinePanel/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'MSOnlinePanel/mark/marked.min.js' %}"></script>
     <style>
         body {
@@ -35,11 +35,11 @@
         }
         a:hover {
             text-decoration: none;
-            color: dimgrey;
+            color: cornflowerblue;
         }
         .border-card {
             box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 30px;
         }
         .nav-custom-link {
@@ -114,6 +114,9 @@
         .toast.show {
             opacity: 0.8;
         }
+        .toast-container {
+            pointer-events: none;
+        }
 
         @media (max-width: 767px) {
             .main-container {
@@ -139,14 +142,14 @@
 <header>
     <!-- 网站的页眉部分 -->
     <nav class="border-card nav navbar-expand-md bg-light fixed-top" style="margin: 2px; padding: 5px; border-radius: 8px; background-color: rgba(247,252,255,0.5) !important; z-index: 2;" id="navbar-top">
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#globalNavbar" aria-controls="#globalNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#globalNavbar" aria-controls="#globalNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="xicon-container btn-toggle-menus"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width: 20px; height: 20px; font-size: 20px; color: inherit;"><circle cx="16" cy="8" r="2" fill="currentColor"></circle><circle cx="16" cy="16" r="2" fill="currentColor"></circle><circle cx="16" cy="24" r="2" fill="currentColor"></circle></svg></span>
         </button>
         <a class="navbar-brand nav-custom-link" href="{% site_url %}">
             <img src="{% static 'favicon.svg' %}" alt="Logo" width="30" height="30" style="width: unset;">
             <strong>智心💗</strong>
         </a>
-        <div class="collapse navbar-collapse" id="globalNavbar" style="padding-right: 10px;">
+        <div class="collapse navbar-collapse" id="globalNavbar" style="padding-right: 10px; flex-direction: row-reverse;">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link nav-custom-link" href="{% site_url 'post/' %}">最近动态</a>
@@ -159,7 +162,7 @@
                         <a class="nav-link nav-custom-link" href="{% site_url 'user/me/' %}">{{ request.session.login_user_name }}</a>
                     </li>
                     <li class="nav-item dropdown show">
-                        <a class="nav-link nav-custom-link dropdown-toggle" href="#" id="dropdownNavbarLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">创作</a>
+                        <a class="nav-link nav-custom-link dropdown-toggle" href="#" id="dropdownNavbarLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">创作</a>
                         <div class="dropdown-menu navbar-dropdown-menu" aria-labelledby="dropdownNavbarLink">
                             <a class="dropdown-item nav-custom-link" href="{% site_url 'post/edit/' %}">发布文章</a>
                             <a class="dropdown-item nav-custom-link" href="{% site_url 'upload/' %}">上传文件</a>
@@ -186,7 +189,7 @@
     <div class="main-container container" style="margin-bottom: 100px;">
         {% if global_page_top %}
             {% if not global_page_top_without_border %}
-                <div class="container-md rounded-1 border border-card" style="background-color: ghostwhite; border-radius: 10px; margin-bottom: 20px; padding: 10px; text-align: center;">
+                <div class="container-md border-card" style="background-color: ghostwhite; border-radius: 10px; margin-bottom: 20px; padding: 10px; text-align: center;">
             {% endif %}
                 {% block global_page_top %}
                 {% endblock %}
@@ -210,21 +213,23 @@
 
 <footer>
     <!-- 网站的页脚部分 -->
-    <div class="border-card nav navbar-expand rounded-1" id="navbarSupportedContent" style="height: min-content; border-radius: 8px; background-color: ghostwhite; margin: 2px; padding: 5px;">
+    <div class="border-card nav navbar-expand rounded-1" id="navbarSupportedContent" style="height: min-content; border-radius: 8px; background-color: ghostwhite; padding: 5px; margin: 2px;">
         <p class="navbar-brand lead text-center">
             心智健康团队 为您提供服务
         </p>
-        <ul class="hide-md navbar-nav ml-auto">
-            <li class="nav-item">
-                <a href="https://beian.miit.gov.cn/" class="nav-link" target="_blank">苏ICP备2024110906号</a>
-            </li>
-            <li class="nav-item">
-                <a href="https://beian.mps.gov.cn/#/" class="nav-link" target="_blank">苏公网安备32011702000460号</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% site_url 'admin/' %}">管理面板</a>
-            </li>
-        </ul>
+        <div class="hide-md" style="flex-direction: row-reverse;">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://beian.miit.gov.cn/" class="nav-link" target="_blank">苏ICP备2024110906号</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://beian.mps.gov.cn/#/" class="nav-link" target="_blank">苏公网安备32011702000460号</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% site_url 'admin/' %}">管理面板</a>
+                </li>
+            </ul>
+        </div>
         <p class="hide-lg navbar-nav" style="text-align: right; width: 100%;">
             <a href="{% site_url 'about/' %}" class="nav-link">关于我们</a>
         </p>

@@ -36,6 +36,13 @@
                     </form>
                 </div>
             </div>
+            <div class="col-md-12 col-lg-3">
+                {% for sidebar in sidebars %}
+                    <div class="rounded-1 border border-card" style="background-color: ghostwhite; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                        {{ sidebar|safe }}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

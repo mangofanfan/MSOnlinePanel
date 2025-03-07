@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 
 from django.http import FileResponse, JsonResponse, Http404
@@ -31,12 +32,11 @@ def upload(request):
         "global_page_top": True,
     }
     if request.method == "POST":
-        form = UploadForm(request.POST, request.FILES)
-        if form.is_valid():
+        try:
             md5, filename = handle_upload_file(request, request.FILES.get('file'))
-            context["status"] = "success"
-            context["msg"] = f"文件 <a href='/upload/{md5}/'>{filename}</a> 上传成功，MD5：{md5}。<button class='btn btn-success' onClick='copyMd5(\"{md5}\")'>点击复制</button>"
-            return render(request, "Upload/upload.html", context)
+            return JsonResponse({"status": "success", "md5": md5, "filename": filename})
+        except Exception:
+            return JsonResponse({"status": "error", "message": "出现了一些问题，文件上传失败。"})
     else:
         return render(request, "Upload/upload.html", context)
 

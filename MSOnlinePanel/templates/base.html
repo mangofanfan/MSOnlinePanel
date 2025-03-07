@@ -7,20 +7,20 @@
         {% else %}
             <div class="col-lg-12">
         {% endif %}
-        <div class="rounded-1 border border-card main-content" style="background-color: ghostwhite; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+        <div class="border-card main-content" style="background-color: ghostwhite; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
             {% block content %}
             {% endblock %}
         </div>
         </div>
         <div class="col-lg-3">
             {% for sidebar in sidebars %}
-                <div class="rounded-1 border border-card" style="background-color: ghostwhite; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <div class="border-card" style="background-color: ghostwhite; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
                     {{ sidebar|safe }}
                 </div>
             {% endfor %}
         </div>
         </div>
-        <div class="rounded-1 border border-card" style="background-color: ghostwhite; border-radius: 10px; padding-top: 10px;">
+        <div class="border-card" style="background-color: ghostwhite; border-radius: 10px; padding-top: 10px;">
             <a href="#" id="hitokoto_link" target="_blank"><p id="hitokoto_text" class="text-center">:D 获取中...</p></a>
             <p id="provider" class="text-center">一言数据来自<a href="https://hitokoto.cn/" style="text-underline: #e8e8ff; color: #666666">一言官方</a></p>
         </div>
@@ -52,7 +52,7 @@
     {% endblock %}
 {% endblock %}
 
-{% block custom_js %}
+{% block custom_js_1 %}
     <script>
         const xhr = new XMLHttpRequest();
         xhr.open('get', 'https://api-hitokoto.mangofanfan.cn/?c=1&c=b&c=c');
@@ -67,4 +67,6 @@
         };
         xhr.send();
     </script>
+    {% block custom_js_2 %}
+    {% endblock %}
 {% endblock %}
