@@ -4,5 +4,5 @@ from Users.models import SiteUser
 
 
 class Chat(models.Model):
-    user = models.ForeignKey(SiteUser, on_delete=models.CASCADE, unique=True, verbose_name="打开此聊天上下文的用户")
+    user = models.OneToOneField(SiteUser, on_delete=models.CASCADE, verbose_name="打开此聊天上下文的用户")
     messages = models.TextField(verbose_name="JSON化聊天内容")
