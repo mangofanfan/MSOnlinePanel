@@ -11,10 +11,12 @@
             {% block content %}
             {% endblock %}
         </div>
+        {% block addon_content %}
+        {% endblock %}
         </div>
         <div class="col-lg-4 col-xl-3">
             {% for sidebar in sidebars %}
-                <div class="border-card" style="background-color: ghostwhite; padding: 20px; margin-bottom: 20px;">
+                <div class="border-card sidebar_widget">
                     {{ sidebar|safe }}
                 </div>
             {% endfor %}

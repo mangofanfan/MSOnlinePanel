@@ -14,7 +14,14 @@
 
 {% block content %}
     <img src="{% if not user.cover_image %}{% static 'bg/lazy_mansui.jpg' %}{% else %}{% site_url 'upload/file/' user.cover_image '/' %}{% endif %}" class="border-card card-image-top" style="height: 200px; object-fit: cover; margin-bottom: 6px;" alt="">
-    <h1>{{ user.nick_name }}</h1>
+    <div class="row">
+        <img src="{% if not user.avatar %}
+        	{% static 'Users/liuyingQAQ.jpg' %}
+        {% else %}
+        	{% site_url 'upload/file/' user.avatar '/' %}
+        {% endif %} " alt="" class="avatar col-3" style="width: 200px; height: 200px; margin-top: -60px; padding: 0;">
+        <h1 class="col-9 display-5" style="margin-top: 20px; text-align: left">{{ user.nick_name }}</h1>
+    </div>
     <p>用户ID：{{ user.id }}</p>
     <p>注册时间：{{ user.register_time }}</p>
     <p>最近登录：{{ user.login_time }}</p>

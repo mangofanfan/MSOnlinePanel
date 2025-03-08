@@ -10,7 +10,7 @@
     <h2 class="text-center">最近文章</h2>
     <div class="widget-list d-flex row">
         {% for post in posts %}
-            <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="list-widget col-xl-3 col-lg-4 col-md-6">
                 {% include 'Posts/post_widget.html' with post=post %}
             </div>
         {% endfor %}
@@ -19,7 +19,7 @@
     <h2 class="text-center">最近文件</h2>
     <div class="widget-list d-flex row">
         {% for file in files %}
-            <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
+            <div class="list-widget col-xl-3 col-lg-4 col-md-6">
                 {% include 'Upload/file_widget.html' with file=file %}
             </div>
         {% endfor %}

@@ -57,10 +57,11 @@ def post_edit(request):
     if (_id:=request.session.get("login_user_id")) is None:
         return redirect("/user/login/")
 
+    _user = SiteUser.objects.get(id=_id)
     context = {
         "global_page_top": True,
+        "user": _user,
     }
-    _user = SiteUser.objects.get(id=_id)
     if request.method == "POST":
         data = json.loads(request.body)
         if Post.objects.filter(title=data["title"], author=_user):

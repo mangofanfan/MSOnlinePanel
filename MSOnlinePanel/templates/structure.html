@@ -1,3 +1,4 @@
+{% load Users.avatar %}
 {% load site_url %}
 {% load static %}
 <!DOCTYPE html>
@@ -42,7 +43,7 @@
                 </li>
                 {% if request.session.login_user_id %}
                     <li class="nav-item">
-                        <a class="nav-link nav-custom-link" href="{% site_url 'user/me/' %}">{{ request.session.login_user_name }}</a>
+                        <a class="nav-link nav-custom-link" href="{% site_url 'user/me/' %}"><img src="{% get_avatar_src request.session.login_user_id %}" alt="" class="avatar" style="width: 30px; height: 30px;"> {{ request.session.login_user_name }}</a>
                     </li>
                     <li class="nav-item dropdown show">
                         <a class="nav-link nav-custom-link dropdown-toggle" href="#" id="dropdownNavbarLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">创作</a>

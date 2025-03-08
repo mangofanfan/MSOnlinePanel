@@ -6,7 +6,7 @@ from django.http import FileResponse, JsonResponse, Http404
 from django.shortcuts import render, redirect
 
 from Users.models import SiteUser
-from Users.views import get_user_link
+from Users.views import get_user_link, get_user_sidebar_widget
 from .forms import UploadForm
 from .models import File
 
@@ -28,12 +28,10 @@ def handle_upload_file(request, _file):
 
 
 def upload(request):
-    if request.session.get("login_user_id") is None:
+    # 只允许登录用户使用上传器
+    if (user_id:=request.session.get("login_user_id")) is None:
         return redirect("/user/login/")
-    context = {
-        "form": UploadForm(),
-        "global_page_top": True,
-    }
+
     if request.method == "POST":
         try:
             md5, filename = handle_upload_file(request, request.FILES.get('file'))
@@ -41,6 +39,14 @@ def upload(request):
         except Exception:
             return JsonResponse({"status": "error", "message": "出现了一些问题，文件上传失败。"})
     else:
+        print(user_id)
+        context = {
+            "form": UploadForm(),
+            "global_page_top": True,
+            "sidebars": [
+                get_user_sidebar_widget(request, SiteUser.objects.get(id=user_id)),
+            ]
+        }
         return render(request, "Upload/upload.html", context)
 
 

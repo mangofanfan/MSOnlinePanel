@@ -10,7 +10,7 @@
                     <a href="/post/post/{{ post.id }}/">
                         <div class="mask">
                             {% if post.image != None %}
-                                <img src="{% site_url '/upload/file/' post.image.md5 '/'%}" alt="" class="border-image">
+                                <img src="{% site_url 'upload/file/' post.image.md5 '/'%}" alt="" class="border-image">
                             {% else %}
                                 <img src="{% static '/bg/loading.png' %}" alt="" class="border-image">
                             {% endif %}

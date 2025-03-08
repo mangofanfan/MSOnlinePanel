@@ -42,7 +42,10 @@
         </div>
         {# 侧边栏 #}
         <div class="col-xl-3 col-lg-4 col-md-12" style="text-align: center; ">
-            <div class="border-card" id="editor-content" style="background-color: ghostwhite; padding: 10px 2px 2px;">
+            <div class="border-card sidebar_widget">
+                {% include 'Users/user_sidebar_widget.html' with user=user %}
+            </div>
+            <div class="border-card sidebar_widget" id="editor-content">
                 <strong>文章操作</strong>
                 <form method="POST">
                     {% csrf_token %}
@@ -59,7 +62,6 @@
                         </div>
                         <input name="input-image" type="text" class="form-control" placeholder="MD5" aria-label="image" aria-describedby="basic-addon1">
                     </div>
-                    <div class="alert alert-warning" id="warning-msg" style="display: none;">{{ msg }}</div>
                     <button onclick="publishPost()" type="button" class="btn btn-success line-button">保存并发布</button>
                 </form>
             </div>
@@ -67,10 +69,34 @@
     </div>
 {% endblock %}
 
+{% block addon_toast %}
+	{% include 'toast.html' with class="bg-success" id="publish-message" header="文章发布成功！" content="即将跳转到文章页面..." %}
+    {% include 'toast.html' with class="bg-warning" id="error-message" header="文章发布失败" content="未知原因，请稍后再试..." %}
+{% endblock %}
 
-{% block custom_js %}
+{% block custom_js_1 %}
     <script src="{% static 'MSOnlinePanel/vditor/vditor.min.js' %}"></script>
-    <script>
+    <script type="text/javascript">
+        const option = {
+            autohide: true,
+            delay: 6000,
+        }
+        let toastEl1 = document.getElementById('publish-message');
+        toastEl1.remove();
+        document.getElementById("toast-container").appendChild(toastEl1);
+        let toastEl2 = document.getElementById('error-message');
+        toastEl2.remove();
+        document.getElementById("toast-container").appendChild(toastEl2);
+        function showPublishMessage() {
+            let toast = new bootstrap.Toast(toastEl1, option)
+            toast.show();
+        }
+        function showErrorMessage() {
+            let toast = new bootstrap.Toast(toastEl2, option)
+            toast.show();
+        }
+    </script>
+    <script type="text/javascript">
         let vditor = null;
         const siteUrl = "{% site_url %}";
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -122,11 +148,14 @@
             .then(json_data => {
                 console.log(json_data);
                 if (json_data["status"] === "success") {
-                    window.location.href = "{% site_url 'post/post/' %}"+json_data["post_id"]+"/";
+                    showPublishMessage();
+                    setTimeout(function () {
+                        window.location.href = "/post/post/" + json_data.post_id + "/";
+                    }, 3000)
                 }
                 else if (json_data["status"] === "warning") {
-                    document.getElementById("warning-msg").innerHTML = json_data["msg"];
-                    document.getElementById("warning-msg").style.display = "block";
+                    document.getElementById("error-message-msg").innerHTML = json_data.msg;
+                    showErrorMessage();
                 }
             })
         }

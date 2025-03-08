@@ -20,16 +20,7 @@ def user(request, input_id):
         raise Http404("请求的用户不存在")
     else:
         context = {
-            "user": {
-                "id": _user.id,
-                "student_number": _user.student_number,
-                "nick_name": _user.nick_name,
-                "phone_number": _user.phone_number,
-                "register_time": _user.register_time,
-                "login_time": _user.login_time,
-                "sign": _user.sign,
-                "cover_image": _user.cover_image,
-            },
+            "user": _user,
             "sidebars":
                 [
                     get_post_list(request, _user),

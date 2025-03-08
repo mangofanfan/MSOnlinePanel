@@ -17,3 +17,30 @@
     <p class="lead text-center">本平台是<strong>基于多模态数据处理的心理健康AI评估预警系统</strong>的在线综合服务平台。</p>
     <p class="text-center">我们已经同{{ num_school }}所院校达成合作协议，正在为{{ num_user }}名用户的心理健康安全保驾护航。</p>
 {% endblock %}
+
+{% block addon_content %}
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="alert alert-success" role="alert">最新文章</div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-6 list-widget">
+                    {% include 'Posts/post_widget.html' with post=posts.0 %}
+                </div>
+                <div class="col-6 list-widget">
+                    {% include 'Posts/post_widget.html' with post=posts.1 %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="alert alert-primary" role="alert">随机推荐</div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-6 list-widget">
+                    {% include 'Posts/post_widget.html' with post=posts.2 %}
+                </div>
+                <div class="col-6 list-widget">
+                    {% include 'Posts/post_widget.html' with post=posts.3 %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

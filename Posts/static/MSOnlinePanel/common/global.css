@@ -35,6 +35,11 @@ a:hover {
     border-radius: 10px;
     margin-bottom: 10px;
 }
+.sidebar_widget {
+    background-color: ghostwhite;
+    padding: 20px;
+    margin-bottom: 20px;
+}
 .nav-custom-link {
     color: midnightblue;
 }

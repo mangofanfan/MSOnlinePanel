@@ -8,7 +8,7 @@
                 <div class="col-lg-6 col-md-3 col-sm-3" style="padding: 2px;" title='{{ file.name }}'>
                     <a href="/upload/{{ file.md5 }}/">
                         <div class="mask">
-                            <img src="{% site_url '/upload/file/' file.md5 '/'%}" alt="" class="border-image">
+                            <img src="{% site_url 'upload/file/' file.md5 '/'%}" alt="" class="border-image">
                             <p class="mask-text text-truncate">{{ file.name }}</p>
                             <p class="mask-blank"></p>
                         </div>
