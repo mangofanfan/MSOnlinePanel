@@ -6,6 +6,7 @@ from django.http import FileResponse, JsonResponse, Http404
 from django.shortcuts import render, redirect
 
 from Users.models import SiteUser
+from Users.views import get_user_link
 from .forms import UploadForm
 from .models import File
 
@@ -27,6 +28,8 @@ def handle_upload_file(request, _file):
 
 
 def upload(request):
+    if request.session.get("login_user_id") is None:
+        return redirect("/user/login/")
     context = {
         "form": UploadForm(),
         "global_page_top": True,
@@ -60,7 +63,10 @@ def page(request, md5: str):
             "md5": md5,
             "uploader": _file.uploader,
             "uploaded_at": _file.uploaded_at,
-        }
+        },
+        "sidebars": [
+            get_user_link(request, _file.uploader),
+        ]
     }
     return render(request, "Upload/file_page.html", context)
 

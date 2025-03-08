@@ -11,21 +11,7 @@
     <div class="widget-list d-flex row">
         {% for post in posts %}
             <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <div class="float-box post-card rounded-1 border-card">
-                    <a href="{% site_url 'post/post/' post.id '/' %}">
-                        {% if post.image %}
-                            <img src="{% site_url 'upload/file/' post.image.md5 '/' %}" class="card-image" alt="{{ post.title }}">
-                        {% else %}
-                            <img src="{% static 'bg/loading.png' %}" class="card-image" alt="{{ post.title }}">
-                        {% endif %}
-                    </a>
-                    <div class="post-card-title h3" title="{{ post.title }}">
-                        <a href="{% site_url 'post/post/' post.id '/' %}">{{ post.title }}</a>
-                    </div>
-                    <p class="post-card-text">
-                        <a href="{% site_url 'user/' post.author.id '/' %}">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}
-                    </p>
-                </div>
+                {% include 'Posts/post_widget.html' with post=post %}
             </div>
         {% endfor %}
     </div>
@@ -34,17 +20,7 @@
     <div class="widget-list d-flex row">
         {% for file in files %}
             <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <div class="float-box post-card rounded-1 border-card">
-                    <a href="{% site_url 'upload/' file.md5 '/' %}">
-                        <img src="{% site_url 'upload/file/' file.md5 '/' %}" title = "{{ file.filename }}" class="card-image" alt="{{ file.filename }}">
-                    </a>
-                    <div class="post-card-title h3" title="{{ file.filename }}">
-                        <a href="{% site_url 'upload/' file.md5 '/' %}">{{ file.filename }}</a>
-                    </div>
-                    <p class="post-card-text">
-                        <a href="{% site_url 'user/' file.uploader.id '/' %}">{{ file.uploader.nick_name }}</a> 上传于 {{ file.uploaded_at }}
-                    </p>
-                </div>
+                {% include 'Upload/file_widget.html' with file=file %}
             </div>
         {% endfor %}
     </div>
@@ -53,12 +29,7 @@
     <div class="widget-list d-flex row">
         {% for notice in notices %}
             <div class="list-widget col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <div class="float-box post-card rounded-1 border-card">
-                    <div class="post-card-title h3" title="{{ notice.title }}">
-                        <a href="{% site_url 'post/notice/' notice.id '/' %}">{{ notice.title }}</a>
-                    </div>
-                    <p class="post-card-text">管理员 发布于 {{ notice.post_time }}</p>
-                </div>
+                {% include 'Posts/notice_widget.html' with notice=notice %}
             </div>
         {% endfor %}
     </div>

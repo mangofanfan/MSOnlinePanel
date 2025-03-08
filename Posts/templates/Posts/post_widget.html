@@ -1,0 +1,18 @@
+{% load static %}
+{% load site_url %}
+{# 文章卡片组件 #}
+<div class="float-box post-card border-card">
+    <a href="{% site_url 'post/post/' post.id '/' %}">
+        {% if post.image %}
+            <img src="{% site_url 'upload/file/' post.image.md5 '/' %}" class="card-image" alt="{{ post.title }}">
+        {% else %}
+            <img src="{% static 'bg/loading.png' %}" class="card-image" alt="{{ post.title }}">
+        {% endif %}
+    </a>
+    <div class="post-card-title h3" title="{{ post.title }}">
+        <a href="{% site_url 'post/post/' post.id '/' %}">{{ post.title }}</a>
+    </div>
+    <p class="post-card-text">
+        <a href="{% site_url 'user/' post.author.id '/' %}">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}
+    </p>
+</div>

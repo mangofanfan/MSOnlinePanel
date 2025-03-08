@@ -165,4 +165,4 @@ def get_file_list(request, _user: SiteUser):
 
 
 def get_user_link(request, _user: SiteUser):
-    return loader.render_to_string("Users/user_link_widget.html", {"prefix": _user.nick_name, "id": _user.id}, request)
+    return loader.render_to_string("Users/user_link_widget.html", {"user": _user}, request)

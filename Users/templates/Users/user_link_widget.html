@@ -1,16 +1,21 @@
+{% load static %}
 {# 这是放置于用户中心的侧边栏的链接组件 #}
 
 {% load site_url %}
-<div class="sidebar-widget" style="padding-bottom: 0;">
-    <strong>{{ prefix }} 的用户链接：</strong>
+<div class="sidebar-widget" style="padding-bottom: 0; text-align: center">
+    {% if user.cover_image == None %}
+        <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+    {% else %}
+        <img src="{% site_url 'upload/file/' user.cover_image '/' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+    {% endif %}
     <hr>
-    <a href="{% site_url 'user/' id '/' %}">
+    <strong>{{ user.nick_name }}</strong>
+    {% if user.sign != None %}
+        <br>
+        <p>{{ user.sign }}</p>
+    {% endif %}
+    <hr>
+    <a href="{% site_url 'user/' user.id '/' %}">
         <button type="button" class="btn btn-success card-btn">用户页面</button>
-    </a>
-    <a href="{% site_url 'post/edit/' %}">
-        <button type="button" class="btn btn-outline-warning card-btn">发布文章</button>
-    </a>
-    <a href="{% site_url 'upload/' %}">
-        <button type="button" class="btn btn-outline-primary card-btn">上传文件</button>
     </a>
 </div>

@@ -1,0 +1,8 @@
+{% load site_url %}
+{# 通知卡片组件 #}
+<div class="float-box post-card border-card">
+    <div class="post-card-title h3" title="{{ notice.title }}">
+        <a href="{% site_url 'post/notice/' notice.id '/' %}">{{ notice.title }}</a>
+    </div>
+    <p class="post-card-text">管理员 发布于 {{ notice.post_time }}</p>
+</div>

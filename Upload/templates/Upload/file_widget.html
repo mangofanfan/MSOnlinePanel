@@ -1,0 +1,13 @@
+{% load site_url %}
+{# 文件卡片组件 #}
+<div class="float-box post-card border-card">
+    <a href="{% site_url 'upload/' file.md5 '/' %}">
+        <img src="{% site_url 'upload/file/' file.md5 '/' %}" title = "{{ file.filename }}" class="card-image" alt="{{ file.filename }}">
+    </a>
+    <div class="post-card-title h3" title="{{ file.filename }}">
+        <a href="{% site_url 'upload/' file.md5 '/' %}">{{ file.filename }}</a>
+    </div>
+    <p class="post-card-text">
+        <a href="{% site_url 'user/' file.uploader.id '/' %}">{{ file.uploader.nick_name }}</a> 上传于 {{ file.uploaded_at }}
+    </p>
+</div>
