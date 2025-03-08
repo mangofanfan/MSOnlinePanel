@@ -9,11 +9,20 @@
         {% else %}
             <img src="/upload/file/{{ user.cover_image }}/" alt="" class="border-card card-image card-image-top">
         {% endif %}
-        <strong>欢迎回来，{{ user.nick_name }}</strong><br>
-        {% if user.sign %}
-            {{ user.sign|safe }}
-            <hr>
-        {% endif %}
+        <div style="display: flex; align-items: center; justify-content: center;">
+            {% if user.avatar == None %}
+                <img src="{% static 'Users/liuyingQAQ.jpg' %}" alt="" class="avatar" >
+            {% else %}
+                <img src="{% site_url 'upload/file/' user.avatar '/' %}" alt="" class="avatar">
+            {% endif %}
+            <div style="display: inline-block; margin-left: 10px;">
+                <strong>欢迎回来，{{ user.nick_name }}</strong><br>
+                {% if user.sign %}
+                    {{ user.sign|safe }}
+                {% endif %}
+            </div>
+        </div>
+        <hr>
         <a href="/user/{{ user.id }}/">
             <button class="btn btn-success card-btn">用户页面</button>
         </a>

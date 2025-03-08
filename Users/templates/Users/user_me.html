@@ -29,7 +29,7 @@
         </div>
     {% elif success is True %}
         <div class="alert alert-success" role="alert">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
             更新用户信息成功！
         </div>
     {% endif %}
@@ -81,13 +81,22 @@
                 <div style="padding: 0 10px 10px;">
                     <form action="{% site_url 'user/me/' %}" method="post">
                         {% csrf_token %}
-                        <div class="input-group mb-3" title="填入用户封面图像的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认占位图。">
+                        <div class="input-group mb-3" title="填入用户头像的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认头像（流萤）。">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">头像？</span>
+                            </div>
+                            <input name="avatar" value="{{ user.avatar }}" class="form-control d-inline-block" type="text" aria-label="CoverImage" aria-describedby="basic-addon1">
+                        </div>
+                        <p>填入用户头像的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认头像（流萤）。</p>
+                        <div class="input-group mb-3" title="填入用户封面图像的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认占位图（满穗）。">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">封面？</span>
                             </div>
                             <input name="cover_image" value="{{ user.cover_image }}" class="form-control d-inline-block" type="text" aria-label="CoverImage" aria-describedby="basic-addon1">
                         </div>
+                        <p>填入用户封面图像的MD5，其值可以在文件链接和文件页面中找到。留空以使用默认占位图（满穗）。</p>
                         <input type="submit" class="btn btn-outline-success" value="更新个性化" style="margin-top: 10px;">
+                        <a href="/upload/"><button type="button" class="btn btn-primary" style="margin-top: 10px;">上传图片</button></a>
                     </form>
                 </div>
             </div>

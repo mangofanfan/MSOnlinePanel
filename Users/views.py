@@ -104,19 +104,7 @@ def me(request):
     try: _user = SiteUser.objects.get(id=request.session.get("login_user_id"))
     except KeyError: return redirect("/users/me/")
     context = {
-        "user":
-            {
-                "id": _user.id,
-                "student_number": _user.student_number,
-                "nick_name": _user.nick_name,
-                "rel_name": _user.rel_name,
-                "phone_number": _user.phone_number,
-                "register_time": _user.register_time,
-                "login_time": _user.login_time,
-                "value_P": _user.value_P,
-                "sign": _user.sign,
-                "cover_image": _user.cover_image,
-            },
+        "user": _user,
         "sidebars":
             [
                 get_user_sidebar_widget(request, _user),
@@ -135,9 +123,11 @@ def me(request):
         except KeyError: pass
         try: _dict["cover_image"] = request.POST.get("cover_image")
         except KeyError: pass
+        try: _dict["avatar"] = request.POST.get("avatar")
+        except KeyError: pass
         if not _dict:
             context["success"] = False
-            context["msg"] = "未获取到需要更新的用户资料或签名。"
+            context["msg"] = "未获取到需要更新的用户资料。"
             return render(request, "Users/user_me.html", context)
         for key, value in _dict.items():
             if not value: continue

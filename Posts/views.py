@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from Upload.models import File
 from Users.models import SiteUser
+from Users.views import get_user_link
 from .models import Post, Notice
 
 
@@ -18,6 +19,9 @@ def post(request, input_id):
             "input_id": _post.id,
             "post": _post,
             "is_markdown_content": _post.is_markdown,
+            "sidebars": [
+                get_user_link(request, _post.author),
+            ]
         }
         return render(request, "Posts/post.html", context)
 

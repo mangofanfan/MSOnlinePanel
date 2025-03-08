@@ -44,3 +44,12 @@
     }
     </style>
 {% endblock %}
+
+{% block custom_js_2 %}
+	<script>
+        window.onload = function () {
+            updateHitokoto();
+            renderMarkdown();
+        }
+    </script>
+{% endblock %}
