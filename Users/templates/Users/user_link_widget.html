@@ -4,11 +4,10 @@
 {% load site_url %}
 <div class="sidebar-widget" style="padding-bottom: 0; text-align: center">
     {% if user.cover_image == None %}
-        <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image card-image-top">
     {% else %}
-        <img src="{% site_url 'upload/file/' user.cover_image '/' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        <img src="{% site_url 'upload/file/' user.cover_image '/' %}" alt="" class="border-card card-image card-image-top">
     {% endif %}
-    <hr>
     <strong>{{ user.nick_name }}</strong>
     {% if user.sign != None %}
         <br>

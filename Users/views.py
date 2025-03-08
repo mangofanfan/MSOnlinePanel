@@ -119,7 +119,7 @@ def me(request):
             },
         "sidebars":
             [
-                get_user_link(request, _user),
+                get_user_sidebar_widget(request, _user),
                 get_post_list(request, _user),
                 get_file_list(request, _user),
             ],
@@ -166,3 +166,7 @@ def get_file_list(request, _user: SiteUser):
 
 def get_user_link(request, _user: SiteUser):
     return loader.render_to_string("Users/user_link_widget.html", {"user": _user}, request)
+
+
+def get_user_sidebar_widget(request, _user: SiteUser):
+    return loader.render_to_string("Users/user_sidebar_widget.html", {"user": _user}, request)

@@ -20,27 +20,24 @@
             {% endfor %}
         </div>
         </div>
-        <div class="border-card" style="background-color: ghostwhite; border-radius: 10px; padding-top: 10px;">
-            <a href="#" id="hitokoto_link" target="_blank"><p id="hitokoto_text" class="text-center">:D 获取中...</p></a>
-            <p id="provider" class="text-center">一言数据来自<a href="https://hitokoto.cn/" style="text-underline: #e8e8ff; color: #666666">一言官方</a></p>
+        <div class="border-card" id="hitokoto-card" style="background-color: ghostwhite; padding-top: 10px; cursor: pointer;">
+            <p id="hitokoto_text" class="text-center">:D 获取中...</p>
+            <p id="provider" class="text-center">点击这里可以主动刷新哦~</p>
         </div>
     </div>
 {% endblock %}
 
 {% block custom_css %}
     <style>
-        a#hitokoto_link {
+        #hitokoto_text {
             text-decoration: none;
             color: slateblue;
             font-size: 1.2em;
             margin: 0;
         }
-        a#hitokoto_link:hover {
+        #hitokoto_text:hover {
             text-decoration: none;
             color: indigo;
-        }
-        #hitokoto_text {
-            margin: 0;
         }
         #provider {
             margin: 2px;
@@ -55,17 +52,23 @@
 {% block custom_js_1 %}
     <script>
         const xhr = new XMLHttpRequest();
-        xhr.open('get', 'https://api-hitokoto.mangofanfan.cn/?c=1&c=b&c=c');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                const hitokoto_link = document.querySelector('#hitokoto_link');
-                const hitokoto_text = document.querySelector('#hitokoto_text');
-                hitokoto_link.href = `https://hitokoto.cn/?uuid=${data.uuid}`;
-                hitokoto_text.innerText = data.hitokoto;
-            }
-        };
-        xhr.send();
+        function updateHitokoto () {
+            xhr.open('get', 'https://api-hitokoto.mangofanfan.cn/?c=1&c=b&c=c');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    const hitokoto_text = document.querySelector('#hitokoto_text');
+                    hitokoto_text.innerText = data.hitokoto;
+                }
+            };
+            xhr.send();
+        }
+        document.getElementById("hitokoto-card").addEventListener("click", function () {
+            updateHitokoto();
+        })
+        window.onload = function () {
+            updateHitokoto();
+        }
     </script>
     {% block custom_js_2 %}
     {% endblock %}

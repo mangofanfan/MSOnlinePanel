@@ -4,7 +4,7 @@ from django.http import StreamingHttpResponse
 from django.shortcuts import render, redirect
 
 from Users.models import SiteUser
-from Users.views import get_user_link, get_post_list, get_file_list
+from Users.views import get_user_link, get_post_list, get_file_list, get_user_sidebar_widget
 from .chat import chatCore
 from .models import Chat
 
@@ -33,7 +33,7 @@ def chat(request):
         context = {
             "messages": [],
             "sidebars": [
-                get_user_link(request, _user),
+                get_user_sidebar_widget(request, _user),
                 get_post_list(request, _user),
                 get_file_list(request, _user),
             ]

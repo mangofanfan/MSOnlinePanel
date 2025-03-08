@@ -3,37 +3,43 @@
 {# 这是专门放置于侧边栏的用户简要信息组件 #}
 
 <div class="sidebar-widget" style="text-align: center; ">
-    {% if nick_name %}
-        {% if cover_image == None %}
-            <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+    {% if user %}
+        {% if user.cover_image == None %}
+            <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image card-image-top">
         {% else %}
-            <img src="{% site_url 'upload/file/' cover_image '/' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+            <img src="/upload/file/{{ user.cover_image }}/" alt="" class="border-card card-image card-image-top">
         {% endif %}
-        <strong>欢迎回来，{{ nick_name }}</strong><br>
-        {% if sign %}
-            {{ sign|safe }}
+        <strong>欢迎回来，{{ user.nick_name }}</strong><br>
+        {% if user.sign %}
+            {{ user.sign|safe }}
             <hr>
         {% endif %}
-        <a href="{% site_url 'user/' id '/' %}">
+        <a href="/user/{{ user.id }}/">
             <button class="btn btn-success card-btn">用户页面</button>
         </a>
-        <a href="{% site_url 'user/me/' %}">
+        <a href="/user/me/">
             <button class="btn btn-outline-warning card-btn">用户中心</button>
         </a>
-        <a href="{% site_url 'post/edit/' %}">
-            <button class="btn btn-outline-danger card-btn">发布文章</button>
+        <a href="post/edit/">
+            <button class="btn btn-info card-btn">发布文章</button>
         </a>
-        <a href="{% site_url 'upload/' %}">
-            <button class="btn btn-info card-btn">上传文件</button>
+        <a href="/upload/">
+            <button class="btn btn-outline-danger card-btn">上传文件</button>
+        </a>
+        <a href="/chat/">
+            <button class="btn btn-secondary card-btn">小智聊天</button>
+        </a>
+        <a href="/user/logout/">
+            <button class="btn btn-outline-success card-btn">退出登录</button>
         </a>
     {% else %}
-        <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image" style="margin-top: -5px; margin-bottom: 0; height: 110px;">
+        <img src="{% static 'bg/lazy_mansui.jpg' %}" alt="" class="border-card card-image card-image-top">
         <strong>未登录</strong>
         <hr>
-        <a href="{% site_url 'user/login/' %}">
+        <a href="/user/login/">
             <button class="btn btn-success">登录</button>
         </a>
-        <a href="{% site_url 'user/signup/' %}">
+        <a href="/user/signup/">
             <button class="btn btn-outline-warning">注册</button>
         </a>
     {% endif %}

@@ -1,0 +1,123 @@
+
+body {
+    background-color: aliceblue;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: contain;
+    background-position: center 0;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+img {
+    width: 100%;
+}
+a {
+    text-decoration: none;
+    color: grey;
+    transition: all 0.3s;
+}
+a:hover {
+    text-decoration: none;
+    color: cornflowerblue;
+}
+.border-card {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.nav-custom-link {
+    color: midnightblue;
+}
+.nav-custom-link:hover {
+    color: navy;
+}
+.navbar-dropdown-menu {
+    background-color: rgba(186, 221, 255, 0.75);
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+.float-box {
+    transition: all 0.3s;
+}
+.float-box:hover {
+    transform: translateY(-6px);
+}
+.line-button {
+    width: 90%;
+    margin: 4px;
+}
+.widget-list {
+    display: flex !important;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: stretch;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.list-widget {
+    display: flex;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+}
+.post-card {
+    width: 96%;
+    padding: 5px;
+    margin: 4px;
+    background-color: white;
+}
+.post-card-title {
+    font-size: 24px;
+    height: 1.4em;
+    line-height: 1.4em;
+}
+.post-card-text {
+    font-size: 14px;
+    height: 1.2em;
+    line-height: 1.2em;
+}
+.card-image {
+    width: 100%;
+    height: 156px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.card-btn {
+    margin-top: 4px;
+}
+.card-image-top {
+    height: 110px;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-top: -20px;
+    margin-bottom: 5px;
+    border-radius: 8px 8px 0 0;
+}
+.site-icon {
+    width: 30px;
+}
+.toast.show {
+    opacity: 0.8;
+}
+.toast-container {
+    pointer-events: none;
+}
+
+@media (max-width: 767px) {
+    .main-container {
+        margin-top: 200px;
+    }
+    .hide-md {
+        display: none;
+    }
+}
+@media (min-width: 768px) {
+    .main-container {
+        margin-top: 300px;
+    }
+    .hide-lg {
+        display: none;
+    }
+}

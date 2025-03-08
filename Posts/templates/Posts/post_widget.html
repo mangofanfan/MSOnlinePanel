@@ -9,10 +9,10 @@
             <img src="{% static 'bg/loading.png' %}" class="card-image" alt="{{ post.title }}">
         {% endif %}
     </a>
-    <div class="post-card-title h3" title="{{ post.title }}">
+    <div class="text-truncate post-card-title h3" title="{{ post.title }}">
         <a href="{% site_url 'post/post/' post.id '/' %}">{{ post.title }}</a>
     </div>
-    <p class="post-card-text">
+    <p class="text-truncate post-card-text">
         <a href="{% site_url 'user/' post.author.id '/' %}">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}
     </p>
 </div>
