@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block global_page_top %}
-    文件上传暂时仅支持上传常规图片格式（jpg、png格式）的文件。
+    文件上传暂时仅支持上传常规图片格式（jpg、png格式）的文件。<br>
+    太菜啦还没学会前端预览和裁剪图片之类的高级的功能，所以比如要上传头像的话，最好直接传方形的图片，阿巴阿巴之类的叭<br>
+    QAQ 以及如果要截图的话不要截这个页面 QAQ
 {% endblock %}
 
 {% block content %}
@@ -15,6 +17,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <p>上传完毕后，您会获得所上传的文件的MD5（长度32的字符串），您可以使用该MD5引用您的文件，例如在编辑器中插入图像。</p>
+        <p>智心平台默认会将该文件的名称直接作为文件名并存储在数据库中，不过您可以在上传之前修改文件名。</p>
         <button type="button" class="btn btn-success" style="width: 100%;" onclick="upload()">上传</button>
     </form>
 {% endblock %}
@@ -45,10 +48,17 @@
             toast.show();
         }
 
+        const input_file = document.getElementsByName('file')[0]
+        const input_filename = document.getElementsByName('filename')[0]
         const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        input_file.addEventListener('change', function (e) {
+            input_filename.value = e.target.files[0].name;
+        })
         function upload() {
             let formData = new FormData();
-            formData.append('file', document.getElementsByName('file')[0].files[0]);
+            let _file = input_file.files[0]
+            let _newfile = new File([_file], input_filename.value, {type: _file.type});
+            formData.append('file', _newfile);
             fetch('/upload/', {
                 method: 'POST',
                 headers: {

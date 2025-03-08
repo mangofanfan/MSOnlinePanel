@@ -14,8 +14,10 @@
     <p>上传时间：{{ file.uploaded_at }}</p>
     <hr>
     <p>MD5：<code id="md5">{{ file.md5 }}</code></p>
+    <p>直链：<code id="link">{% site_url 'upload/file/' file.md5 '/' %}</code></p>
     <p>Markdown语法插入此图片：<code id="editor-md5">![{{ file.name }}]({% site_url 'upload/file/' file.md5 '/' %})</code></p>
     <button class="btn btn-primary" onclick="copy('{{ file.md5 }}')">只复制MD5</button>
+    <button class="btn btn-primary" onclick="copy('{% site_url 'upload/file/' file.md5 '/' %}')">复制直链</button>
     <button class="btn btn-primary" onclick="copy('![{{ file.name }}]({% site_url 'upload/file/' file.md5 '/' %})')">复制Markdown</button>
 {% endblock %}
 
