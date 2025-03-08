@@ -142,14 +142,14 @@ def me(request):
 
 def get_post_list(request, _user: SiteUser):
     post_list = []
-    for _post in Post.objects.filter(author=_user).order_by("-post_time")[:6]:
-        post_list.append({"id": _post.id, "title": _post.title})
+    for _post in Post.objects.filter(author=_user).order_by("-post_time")[:4]:
+        post_list.append({"id": _post.id, "title": _post.title, "image": _post.image})
     return loader.render_to_string("Posts/post_list_widget.html", {"prefix": _user.nick_name, "post_list": post_list}, request)
 
 
 def get_file_list(request, _user: SiteUser):
     file_list = []
-    for _file in File.objects.filter(uploader=_user).order_by("-uploaded_at")[:6]:
+    for _file in File.objects.filter(uploader=_user).order_by("-uploaded_at")[:8]:
         file_list.append({"md5": _file.md5, "name": _file.filename})
     return loader.render_to_string("Upload/file_list_widget.html", {"prefix": _user.nick_name, "file_list": file_list}, request)
 

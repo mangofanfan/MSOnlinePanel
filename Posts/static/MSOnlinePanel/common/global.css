@@ -27,6 +27,14 @@ a:hover {
     border-radius: 10px;
     margin-bottom: 30px;
 }
+.border-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 .nav-custom-link {
     color: midnightblue;
 }
@@ -101,6 +109,42 @@ a:hover {
     height: 70px;
     object-fit: cover;
 }
+
+/* 图片遮罩 */
+.mask {
+    position: relative;
+    z-index: 1;
+}
+.mask:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.42);
+    transition: all 0.3s;
+}
+.mask:hover:before {
+    opacity: 1;
+}
+p.mask-text {
+    position: absolute;
+    margin-top: -40px;
+    padding-left: 3px;
+    z-index: 2;
+    margin-bottom: 0;
+    font-size: 1.2rem;
+    color: whitesmoke;
+    width: 100%;
+}
+p.mask-blank {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .site-icon {
     width: 30px;
 }

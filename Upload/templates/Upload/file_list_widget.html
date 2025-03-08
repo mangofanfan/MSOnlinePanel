@@ -3,11 +3,19 @@
     <strong>{{ prefix }} 的最近上传文件：</strong>
     <hr>
     {% if file_list %}
-        <ul style="margin-bottom: 0;">
-        {% for file in file_list %}
-            <li><a href="{% site_url 'upload/' file.md5 '/' %}">{{ file.name }}</a></li>
-        {% endfor %}
-        </ul>
+        <div class="row list-widget">
+            {% for file in file_list %}
+                <div class="col-lg-6 col-md-3 col-sm-3" style="padding: 2px;" title='{{ file.name }}'>
+                    <a href="/upload/{{ file.md5 }}/">
+                        <div class="mask">
+                            <img src="{% site_url '/upload/file/' file.md5 '/'%}" alt="" class="border-image">
+                            <p class="mask-text text-truncate">{{ file.name }}</p>
+                            <p class="mask-blank"></p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
         <p style="margin-bottom: 0;">这个人还没有上传过文件哦！</p>
     {% endif %}

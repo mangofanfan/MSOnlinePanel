@@ -1,13 +1,26 @@
+{% load static %}
 {% load site_url %}
 <div class="sidebar-list-widget" style="padding-bottom: 0;">
     <strong>{{ prefix }} 的最近文章列表：</strong>
     <hr>
     {% if post_list %}
-        <ul style="margin-bottom: 0;">
-        {% for post in post_list %}
-            <li><a href="{% site_url 'post/post/' post.id '/' %}">{{ post.title }}</a></li>
-        {% endfor %}
-        </ul>
+        <div class="row list-widget">
+            {% for post in post_list %}
+                <div class="col-lg-6 col-md-3 col-sm-3" style="padding: 2px;" title='{{ post.title }}'>
+                    <a href="/post/post/{{ post.id }}/">
+                        <div class="mask">
+                            {% if post.image != None %}
+                                <img src="{% site_url '/upload/file/' post.image.md5 '/'%}" alt="" class="border-image">
+                            {% else %}
+                                <img src="{% static '/bg/loading.png' %}" alt="" class="border-image">
+                            {% endif %}
+                            <p class="mask-text text-truncate">{{ post.title }}</p>
+                            <p class="mask-blank"></p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
         <p style="margin-bottom: 0;">这个人还没有写过文章哦！</p>
     {% endif %}

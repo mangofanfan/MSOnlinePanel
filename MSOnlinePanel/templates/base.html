@@ -3,7 +3,7 @@
 {% block main_body %}
     <div class="row">
         {% if sidebars %}
-            <div class="col-lg-9">
+            <div class="col-lg-8 col-xl-9">
         {% else %}
             <div class="col-lg-12">
         {% endif %}
@@ -12,7 +12,7 @@
             {% endblock %}
         </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4 col-xl-3">
             {% for sidebar in sidebars %}
                 <div class="border-card" style="background-color: ghostwhite; padding: 20px; margin-bottom: 20px;">
                     {{ sidebar|safe }}
