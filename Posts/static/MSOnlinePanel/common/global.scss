@@ -1,71 +1,68 @@
-@charset "UTF-8";
+@mixin radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+@mixin custom_radius($radius, $radius2, $radius3, $radius4) {
+  -webkit-border-radius: $radius $radius2 $radius3 $radius4;
+  -moz-border-radius: $radius $radius2 $radius3 $radius4;
+  border-radius: $radius $radius2 $radius3 $radius4;
+}
+@mixin box_shadow($_1, $_2, $_3, $_4, $color) {
+  -webkit-box-shadow: $_1 $_2 $_3 $_4 $color;
+  -moz-box-shadow: $_1 $_2 $_3 $_4 $color;
+  box-shadow: $_1 $_2 $_3 $_4 $color;
+}
+
 body {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: contain;
   background-position: center 0;
 }
-
 h1 {
   text-align: center;
   margin-bottom: 30px;
 }
-
 img {
   width: 100%;
 }
-
 .border-card {
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include radius(8px);
   margin-bottom: 30px;
 }
-
 .border-image {
   width: 100%;
   height: 100px;
   object-fit: cover;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include radius(8px);
   margin-bottom: 10px;
 }
-
 .sidebar_widget {
   padding: 20px;
   margin-bottom: 20px;
 }
-
 .nav-custom-link {
   color: midnightblue;
 }
-
 .nav-custom-link:hover {
   color: navy;
 }
-
 .navbar-dropdown-menu {
   background-color: rgba(186, 221, 255, 0.75);
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include radius(8px);
   transition: all 0.3s;
 }
-
 .float-box {
   transition: all 0.3s;
 }
-
 .float-box:hover {
   transform: translateY(-6px);
 }
-
 .line-button {
   width: 90%;
   margin: 4px;
 }
-
 .widget-list {
   display: flex !important;
   flex-wrap: wrap;
@@ -74,58 +71,45 @@ img {
   justify-content: space-evenly;
   align-items: center;
 }
-
 .list-widget {
+  @extend .no-margin-padding;
   display: flex;
   align-items: stretch;
 }
-
 .post-card {
   width: 96%;
   padding: 5px;
   margin: 4px;
 }
-
 .post-card-title {
   font-size: 24px;
   height: 1.4em;
   line-height: 1.4em;
 }
-
 .post-card-text {
   font-size: 14px;
   height: 1.2em;
   line-height: 1.2em;
 }
-
 .card-image {
   width: 100%;
   height: 156px;
   object-fit: cover;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include radius(8px);
 }
-
 .card-btn {
   margin-top: 4px;
 }
-
 .card-image-top {
   height: 110px;
   width: calc(100% + 40px);
   margin-left: -20px;
   margin-top: -20px;
   margin-bottom: 5px;
-  -webkit-border-radius: 8px 8px 0 0;
-  -moz-border-radius: 8px 8px 0 0;
-  border-radius: 8px 8px 0 0;
+  @include custom_radius(8px, 8px, 0, 0);
 }
-
 .avatar {
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
+  @include radius(50%);
   width: 70px;
   height: 70px;
   object-fit: cover;
@@ -136,7 +120,6 @@ img {
   position: relative;
   z-index: 1;
 }
-
 .mask:before {
   content: "";
   position: absolute;
@@ -144,18 +127,14 @@ img {
   left: 0;
   width: 100%;
   height: 100px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  @include radius(8px);
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.42);
   transition: all 0.3s;
 }
-
 .mask:hover:before {
   opacity: 1;
 }
-
 p.mask-text {
   position: absolute;
   margin-top: -40px;
@@ -166,21 +145,21 @@ p.mask-text {
   color: whitesmoke;
   width: 100%;
 }
+p.mask-blank {
+  @extend .no-margin-padding;
+}
 
 .site-icon {
   width: 30px;
 }
-
 .toast.show {
   opacity: 0.8;
 }
-
 .toast-container {
   pointer-events: none;
 }
-
 /* 补充 */
-.no-margin-padding, .list-widget, p.mask-blank {
+.no-margin-padding {
   padding: 0;
   margin: 0;
 }
@@ -201,6 +180,7 @@ p.mask-text {
     display: none;
   }
 }
+
 /* 亮色主题，自动应用 */
 @media (prefers-color-scheme: light) {
   body {
@@ -210,14 +190,10 @@ p.mask-text {
     background-color: rgba(255, 255, 255, 0.4);
   }
   .border-card {
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-    -moz-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    @include box_shadow(0, 2px, 2px, 0, rgba(0, 0, 0, 0.16));
   }
   .border-image {
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-    -moz-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    @include box_shadow(0, 2px, 2px, 0, rgba(0, 0, 0, 0.16));
   }
   .sidebar_widget {
     background-color: ghostwhite;
@@ -247,6 +223,7 @@ p.mask-text {
     background-color: rgba(170, 247, 255, 0.6);
   }
 }
+
 /* 暗色主题 */
 @media (prefers-color-scheme: dark) {
   * {
@@ -267,15 +244,11 @@ p.mask-text {
     background-color: rgba(83, 83, 83, 0.6) !important;
   }
   .border-card {
-    -webkit-box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
-    -moz-box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
-    box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
+    @include box_shadow(0, 2px, 2px, 0, rgba(255, 255, 255, 0.16));
     background-color: #323539;
   }
   .border-image {
-    -webkit-box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
-    -moz-box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
-    box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
+    @include box_shadow(0, 2px, 2px, 0, rgba(255, 255, 255, 0.16));
   }
   .sidebar_widget {
     background-color: #323539;
@@ -325,5 +298,3 @@ p.mask-text {
     background-color: #346334 !important;
   }
 }
-
-/*# sourceMappingURL=global.css.map */
