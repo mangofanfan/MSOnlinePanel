@@ -16,14 +16,14 @@
                     {% if messages %}
                     	{% for message in messages %}
                             {% if message.role == "assistant" %}
-                                <div class="border-card ai-chat-card">{{ message.content|safe }}</div>
+                                <div class="border-card card-bg-1">{{ message.content|safe }}</div>
                             {% else %}
-                                <div class="border-card user-chat-card">{{ message.content|safe }}</div>
+                                <div class="border-card card-bg-2">{{ message.content|safe }}</div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="border-card" style="padding: 6px; background-color: ivory;">
+                <div class="border-card" style="padding: 6px;">
                     <form id="chat-message-form" action="" method="post">
                         {% csrf_token %}
                         <div class="input-group">
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-12 col-lg-3">
                 {% for sidebar in sidebars %}
-                    <div class="border-card" style="background-color: ghostwhite; padding: 20px; margin-bottom: 20px;">
+                    <div class="border-card" style="padding: 20px; margin-bottom: 20px;">
                         {{ sidebar|safe }}
                     </div>
                 {% endfor %}
@@ -81,7 +81,7 @@
             });
 
             let _div = document.createElement("div");
-            _div.setAttribute("class", "border-card ai-chat-card markdown-content");
+            _div.setAttribute("class", "border-card card-bg-1 markdown-content");
             document.getElementById("chat-messages").appendChild(_div);
 
             const reader = res.body.getReader();
@@ -104,7 +104,7 @@
             let text = html.value;
             let _div = document.createElement("div");
             _div.innerText = text;
-            _div.setAttribute("class", "border-card user-chat-card markdown-content");
+            _div.setAttribute("class", "border-card card-bg-2 markdown-content");
             document.getElementById("chat-messages").appendChild(_div);
             html.value = "";
             startChat(text)
@@ -117,15 +117,11 @@
         #ai-report-generating {
             margin-bottom: 2px;
         }
-        .ai-chat-card {
-            padding: 10px;
-            background-color: honeydew;
-            margin-bottom: 20px;
+        .card-bg-1 {
+            padding: 20px;
         }
-        .user-chat-card {
-            padding: 10px;
-            background-color: lavender;
-            margin-bottom: 20px;
+        .card-bg-2 {
+            padding: 20px;
         }
         .chat-message-submit {
             width: 20%;

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block global_page_top %}
-    <strong>全站通知：</strong>平台正在建设中。
+    <p class="no-margin-padding"><strong>全站通知：</strong>平台正在建设中。</p>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
 {% block addon_content %}
     <div class="row">
         <div class="col-md-6 col-sm-12">
-            <div class="alert alert-success" role="alert">最新文章</div>
+            <div class="alert alert-success" role="alert"><p class="no-margin-padding">最新文章</p></div>
             <div class="row" style="margin-bottom: 20px;">
                 <div class="col-6 list-widget">
                     {% include 'Posts/post_widget.html' with post=posts.0 %}
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
-            <div class="alert alert-primary" role="alert">随机推荐</div>
+            <div class="alert alert-primary" role="alert"><p class="no-margin-padding">随机推荐</p></div>
             <div class="row" style="margin-bottom: 20px;">
                 <div class="col-6 list-widget">
                     {% include 'Posts/post_widget.html' with post=posts.2 %}

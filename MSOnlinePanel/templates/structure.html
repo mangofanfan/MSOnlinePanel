@@ -25,7 +25,7 @@
 <body>
 <header>
     <!-- 网站的页眉部分 -->
-    <nav class="border-card nav navbar-expand-md bg-light fixed-top" style="margin: 2px; padding: 5px; border-radius: 8px; background-color: rgba(247,252,255,0.5) !important; z-index: 2;" id="navbar-top">
+    <nav class="border-card nav navbar-expand-md fixed-top" style="margin: 2px; padding: 5px; border-radius: 8px; z-index: 2;" id="navbar-top">
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#globalNavbar" aria-controls="#globalNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="xicon-container btn-toggle-menus"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width: 20px; height: 20px; font-size: 20px; color: inherit;"><circle cx="16" cy="8" r="2" fill="currentColor"></circle><circle cx="16" cy="16" r="2" fill="currentColor"></circle><circle cx="16" cy="24" r="2" fill="currentColor"></circle></svg></span>
         </button>
@@ -73,7 +73,7 @@
     <div class="main-container container" style="margin-bottom: 100px;">
         {% if global_page_top %}
             {% if not global_page_top_without_border %}
-                <div class="container-md border-card" style="background-color: ghostwhite; border-radius: 10px; margin-bottom: 20px; padding: 10px; text-align: center;">
+                <div class="container-md border-card" style="margin-bottom: 20px; padding: 10px; text-align: center;">
             {% endif %}
                 {% block global_page_top %}
                 {% endblock %}
@@ -99,7 +99,7 @@
     <!-- 网站的页脚部分 -->
     <div class="border-card nav navbar-expand" id="navbarSupportedContent" style="height: min-content; border-radius: 8px; background-color: ghostwhite; padding: 5px; margin: 2px;">
         <p class="navbar-brand lead text-center">
-            心智健康团队 为您提供服务
+            心智健康团队
         </p>
         <div class="hide-md" style="flex-direction: row-reverse;">
             <ul class="navbar-nav ml-auto">

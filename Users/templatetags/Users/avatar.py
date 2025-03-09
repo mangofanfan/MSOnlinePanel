@@ -6,4 +6,7 @@ register = template.Library()
 
 @register.simple_tag()
 def get_avatar_src(user_id):
-    return "/upload/file/" + SiteUser.objects.get(id=user_id).avatar + "/"
+    if (md5:=SiteUser.objects.get(id=user_id).avatar) is not None:
+        return "/upload/file/" + md5 + "/"
+    else:
+        return "/static/Users/liuyingQAQ.jpg"

@@ -1,6 +1,5 @@
 
 body {
-    background-color: aliceblue;
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: contain;
@@ -13,17 +12,7 @@ h1 {
 img {
     width: 100%;
 }
-a {
-    text-decoration: none;
-    color: grey;
-    transition: all 0.3s;
-}
-a:hover {
-    text-decoration: none;
-    color: cornflowerblue;
-}
 .border-card {
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
     border-radius: 10px;
     margin-bottom: 30px;
 }
@@ -31,12 +20,10 @@ a:hover {
     width: 100%;
     height: 100px;
     object-fit: cover;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
     border-radius: 10px;
     margin-bottom: 10px;
 }
 .sidebar_widget {
-    background-color: ghostwhite;
     padding: 20px;
     margin-bottom: 20px;
 }
@@ -79,7 +66,6 @@ a:hover {
     width: 96%;
     padding: 5px;
     margin: 4px;
-    background-color: white;
 }
 .post-card-title {
     font-size: 24px;
@@ -159,6 +145,11 @@ p.mask-blank {
 .toast-container {
     pointer-events: none;
 }
+/* 补充 */
+.no-margin-padding {
+    padding: 0;
+    margin: 0;
+}
 
 @media (max-width: 767px) {
     .main-container {
@@ -174,5 +165,120 @@ p.mask-blank {
     }
     .hide-lg {
         display: none;
+    }
+}
+
+/* 亮色主题，自动应用 */
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: aliceblue;
+    }
+    #navbar-top {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+    .border-card {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    }
+    .border-image {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    }
+    .sidebar_widget {
+        background-color: ghostwhite;
+    }
+    .post-card {
+        background-color: white;
+    }
+    a {
+        text-decoration: none;
+        color: grey;
+        transition: all 0.3s;
+    }
+    a:hover {
+        text-decoration: none;
+        color: cornflowerblue;
+    }
+    .card-bg-1 {
+        background-color: linen;
+    }
+    .card-bg-2 {
+        background-color: floralwhite;
+    }
+    .card-bg-3 {
+        background-color: honeydew;
+    }
+    .user-action-card {
+        background-color: rgba(170, 247, 255, 0.6);
+    }
+}
+
+/* 暗色主题 */
+@media (prefers-color-scheme: dark) {
+    * {
+        color: ghostwhite;
+    }
+    body {
+        background-color: #393939;
+    }
+    input {
+        background-color: #353535 !important;
+        color: ghostwhite !important;
+    }
+    textarea {
+        background-color: #353535 !important;
+        color: ghostwhite !important;
+    }
+    .nav {
+        background-color: rgba(83, 83, 83, 0.6) !important;
+    }
+    .border-card {
+        box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16) !important;
+        background-color: #323539;
+    }
+    .border-image {
+        box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16);
+    }
+    .sidebar_widget {
+        background-color: #323539;
+    }
+    .post-card {
+        background-color: #323539;
+    }
+    a {
+        text-decoration: none;
+        color: #dadaf1;
+        transition: all 0.3s;
+    }
+    a:hover {
+        text-decoration: none;
+        color: cornflowerblue;
+    }
+    .card-bg-1 {
+        background-color: #37325c;
+    }
+    .card-bg-2 {
+        background-color: #34424e;
+    }
+    .card-bg-3 {
+        background-color: #415c41;
+    }
+    .user-action-card {
+        background-color: rgba(53, 79, 81, 0.6);
+    }
+    /* vditor */
+    .vditor-toolbar {
+        background-color: #323539 !important;
+    }
+    .vditor-content {
+        background-color: #323539 !important;
+    }
+    .vditor-reset {
+        background-color: #323539 !important;
+    }
+    /* 消息框 */
+    .alert-primary {
+        background-color: #2f4c57;
+    }
+    .alert-success {
+        background-color: #346334 !important;
     }
 }
