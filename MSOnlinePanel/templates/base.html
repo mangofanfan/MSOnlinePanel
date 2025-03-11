@@ -27,13 +27,14 @@
             <p id="provider" class="text-center">点击这里可以主动刷新哦~</p>
         </div>
     </div>
-    <section class="float-button-container fixed-bottom" id="float-button-container" style="z-index: 1; margin-bottom: 80px; text-align: center;">
+{% endblock %}
+
+{% block float_buttons %}
     <a href="#top">
         <button type="button" id="btn-to-top" class="btn btn-outline-secondary float-button" style="display: none">
             <svg t="1741664675161" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1479" width="35" height="35"><path d="M447.99999999 512l128.00000002 0-1e-8 458.68799999c0 29.44-23.872 53.312-53.312 53.31200001l-21.376 0A53.312 53.312 0 0 1 448 970.68799999L447.99999999 512z" fill="#515151" p-id="1480"></path><path d="M242.176 430.72l220.8-358.08a53.312 53.312 0 0 1 90.432-0.576l226.752 358.08A53.312 53.312 0 0 1 735.104 512L287.55200001 512a53.312 53.312 0 0 1-45.44000002-81.28z" fill="#515151" p-id="1481"></path></svg>
         </button>
     </a>
-    </section>
 {% endblock %}
 
 {% block custom_css %}
@@ -54,16 +55,6 @@
             margin: 2px;
             font-size: 0.9em;
             color: #666;
-        }
-        /* 浮动按钮 */
-        .float-button-container {
-        }
-        .float-button {
-            padding: 0;
-            height: 50px;
-            width: 50px;
-            opacity: 0;
-            transition: all 0.4s;
         }
     </style>
     {% block custom_css_1 %}
@@ -111,10 +102,10 @@
         window.onscroll = function () {
             float_button_update();
         }
+        float_button_update();
 
         window.onload = function () {
             updateHitokoto();
-            float_button_update();
         }
     </script>
     {% block custom_js_2 %}

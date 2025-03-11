@@ -15,5 +15,9 @@
 
 本项目现阶段的一切特性均是为主要项目服务。
 
+# 预览
+![light](/readme/2025-3-11.png)
+![dark](/readme/2025-3-11-2.png)
+
 # 我的其他项目
 * [**FanTools2**](https://github.com/mangofanfan/FanTools2) - 基于 PySide6 + QFluentWidgets 的 Windows 平台工具箱程序。

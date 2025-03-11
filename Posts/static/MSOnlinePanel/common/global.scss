@@ -70,13 +70,16 @@
 // 全局样式
 * {
   color: var(--theme-text-color);
+  transition: all 0.3s ease-in-out;
 }
 body {
   background-color: var(--theme-body-color);
+  background-image: var(--theme-background-image);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
   background-position: center 0;
+  transition: all 0.4s linear;
 }
 img {
   width: 100%;
@@ -91,8 +94,14 @@ a:hover {
   color: var(--theme-link-hover-color);
 }
 // 导航栏
-#navbar-top {
-  background-color: var(--theme-background-color-t);
+nav, .nav {
+  background-color: var(--theme-background-color-t) !important;
+  margin: 2px;
+  padding: 5px;
+  @media (min-width: 768px) {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+  }
 }
 .nav-custom-link {
   color: midnightblue;
@@ -331,6 +340,17 @@ h1, h2, h3 {
   color: #fff;
   background-color: #e345cd;
   border-color: #ff62ea;
+}
+// 浮动按钮
+.float-button-container {
+  pointer-events: none;
+}
+.float-button {
+  pointer-events: auto;
+  @extend .no-margin-padding;
+  height: 50px;
+  width: 50px;
+  transition: all 0.4s;
 }
 // 补充
 .no-margin-padding {
