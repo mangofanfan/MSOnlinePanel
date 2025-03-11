@@ -22,7 +22,8 @@
         </div>
     </div>
     <hr>
-    <a href="{% site_url 'user/' user.id '/' %}">
-        <button type="button" class="btn btn-success card-btn">用户页面</button>
+    <a href="/user/{{ user.id }}/">
+        <button type="button" class="btn btn-success card-btn">📖用户</button>
     </a>
+    <button type="button" class="btn btn-love card-btn">💗关注</button>
 </div>

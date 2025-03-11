@@ -15,7 +15,20 @@
     <h1>文件上传器</h1>
     <form method="POST" enctype="multipart/form-data" style="text-align: center">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="input-group mb-3">
+            {{ form.file.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">文件</span>
+            </div>
+            {{ form.file }}
+        </div>
+        <div class="input-group mb-3">
+            {{ form.filename.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">文件名</span>
+            </div>
+            {{ form.filename }}
+        </div>
         <p>上传完毕后，您会获得所上传的文件的MD5（长度32的字符串），您可以使用该MD5引用您的文件，例如在编辑器中插入图像。</p>
         <p>智心平台默认会将该文件的名称直接作为文件名并存储在数据库中，不过您可以在上传之前修改文件名。</p>
         <button type="button" class="btn btn-success" style="width: 100%;" onclick="upload()">上传</button>

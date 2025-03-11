@@ -12,14 +12,14 @@
 {% block content %}
     <div class="row">
     <div class="col-lg-5 col-md-6 col-sm-12">
-        <img src="{% if post.image %}{% site_url 'upload/file/' post.image.md5 '/' %}{% else %}{% static 'bg/loading.png' %}{% endif %}" alt="{{ post.title }}" class="border-card" style="margin-top: -120px;">
+        <img src="{% if post.image %}{% site_url 'upload/file/' post.image.md5 '/' %}{% else %}{% static 'bg/loading.png' %}{% endif %}" alt="{{ post.title }}" class="border-card" style="margin-top: -60px; margin-left: -20px; width: calc(100% + 40px)">
     </div>
     <div class="col-lg-7 col-md-6 col-sm-12">
-        <h1 class="display-4 text-md-left text-sm-center">{{ post.title }}</h1>
+        <h1 class="display-4 text-md-left">{{ post.title }}</h1>
         {% if post.author %}
-            <p class="text-md-left text-sm-center"><a href="{% site_url 'user/' post.author.id '/' %}">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}</p>
+            <p class="text-md-left"><a href="{% site_url 'user/' post.author.id '/' %}">{{ post.author.nick_name }}</a> 发布于 {{ post.post_time }}</p>
         {% else %}
-            <p class="text-md-left text-sm-center">管理员 发布于 {{ post.post_time }}</p>
+            <p class="text-md-left">管理员 发布于 {{ post.post_time }}</p>
         {% endif %}
     </div>
     </div>
@@ -37,6 +37,7 @@
 {% endblock %}
 
 {% block custom_css_1 %}
+    <link rel="stylesheet" href="{% static 'Posts/tocbot/custom_tocbot.css' %}">
 	<style>
     .main-content {
         margin: 0;
@@ -46,10 +47,18 @@
 {% endblock %}
 
 {% block custom_js_2 %}
+    <script type="text/javascript" src="{% static 'Posts/tocbot/tocbot.min.js' %}"></script>
 	<script>
+        tocbot.init({
+            tocSelector: '.toc-table',
+            contentSelector: '.main-content',
+            headingSelector: 'h1, h2, h3',
+            hasInnerContainer: true,
+        })
         window.onload = function () {
             updateHitokoto();
             renderMarkdown();
+            tocbot.refresh();
         }
     </script>
 {% endblock %}

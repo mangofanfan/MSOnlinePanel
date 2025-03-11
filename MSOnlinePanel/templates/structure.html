@@ -2,7 +2,7 @@
 {% load site_url %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" id="html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,6 +18,14 @@
         body {
             background-image: url("{% static '/bg/background_122474271_p0.jpg' %}");
         }
+        #navbar-top {
+            margin: 2px;
+            padding: 5px;
+            @media (min-width: 768px) {
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+        }
     </style>
     {% block custom_css %}
     {% endblock %}
@@ -25,7 +33,7 @@
 <body>
 <header>
     <!-- 网站的页眉部分 -->
-    <nav class="border-card nav navbar-expand-md fixed-top" style="margin: 2px; padding: 5px; border-radius: 8px; z-index: 2;" id="navbar-top">
+    <nav class="border-card nav navbar-expand-md fixed-top" style="z-index: 2;" id="navbar-top">
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#globalNavbar" aria-controls="#globalNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="xicon-container btn-toggle-menus"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width: 20px; height: 20px; font-size: 20px; color: inherit;"><circle cx="16" cy="8" r="2" fill="currentColor"></circle><circle cx="16" cy="16" r="2" fill="currentColor"></circle><circle cx="16" cy="24" r="2" fill="currentColor"></circle></svg></span>
         </button>
@@ -97,7 +105,7 @@
 
 <footer>
     <!-- 网站的页脚部分 -->
-    <div class="border-card nav navbar-expand" id="navbarSupportedContent" style="height: min-content; border-radius: 8px; background-color: ghostwhite; padding: 5px; margin: 2px;">
+    <div class="border-card nav navbar-expand fixed-bottom" id="navbarSupportedContent" style="height: min-content; padding: 5px; margin: 2px;">
         <p class="navbar-brand lead text-center">
             心智健康团队
         </p>
@@ -128,6 +136,12 @@
 
 {% block custom_js %}
     <script type="text/javascript">
+        const renderer = new marked.Renderer();
+        renderer.heading = function(text, level) {
+            const id = "title-" + text.text.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-');
+            return `<h${text.depth} id="${id}">${text.text}</h${text.depth}>`;
+        }
+        marked.setOptions({renderer});
         function renderMarkdown() {
             let list = document.getElementsByClassName("markdown-content")
             let i;
@@ -136,6 +150,14 @@
                 list[i].classList.remove("markdown-content")
             }
             console.log("完成渲染页面中的 Markdown 内容。")
+        }
+        /* 自动设置网站主题 */
+        const isDarkTheme = window.matchMedia("(prefers-color-scheme: dark)"); // 是深色
+        const html = document.getElementById("html")
+        if (isDarkTheme.matches) { // 是深色
+            html.setAttribute("class", "dark");
+        } else { // 不是深色
+            html.setAttribute("class", "light");
         }
     </script>
     {% block custom_js_1 %}

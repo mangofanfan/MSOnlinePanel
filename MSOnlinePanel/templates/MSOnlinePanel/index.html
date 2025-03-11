@@ -22,23 +22,27 @@
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="alert alert-success" role="alert"><p class="no-margin-padding">最新文章</p></div>
-            <div class="row" style="margin-bottom: 20px;">
-                <div class="col-6 list-widget">
-                    {% include 'Posts/post_widget.html' with post=posts.0 %}
-                </div>
-                <div class="col-6 list-widget">
-                    {% include 'Posts/post_widget.html' with post=posts.1 %}
+            <div style="padding: 0 4px 0 4px;">
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-6 list-widget">
+                        {% include 'Posts/post_widget.html' with post=posts.0 %}
+                    </div>
+                    <div class="col-6 list-widget">
+                        {% include 'Posts/post_widget.html' with post=posts.1 %}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="alert alert-primary" role="alert"><p class="no-margin-padding">随机推荐</p></div>
-            <div class="row" style="margin-bottom: 20px;">
-                <div class="col-6 list-widget">
-                    {% include 'Posts/post_widget.html' with post=posts.2 %}
-                </div>
-                <div class="col-6 list-widget">
-                    {% include 'Posts/post_widget.html' with post=posts.3 %}
+            <div style="padding: 0 4px 0 4px;">
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-6 list-widget">
+                        {% include 'Posts/post_widget.html' with post=posts.2 %}
+                    </div>
+                    <div class="col-6 list-widget">
+                        {% include 'Posts/post_widget.html' with post=posts.3 %}
+                    </div>
                 </div>
             </div>
         </div>

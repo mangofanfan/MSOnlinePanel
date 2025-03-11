@@ -1,0 +1,58 @@
+// To leverage the native smooth-scrolling by the browser (currently available in Firefox 36+ and Chrome 49+)
+// body, .smooth-container { scroll-behavior: smooth }
+
+// 修改自 Tocbot
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toc {
+  overflow-y: auto;
+}
+
+.toc > .toc-list {
+  overflow: hidden;
+  position: relative;
+  padding-left: 4px;
+  padding-right: 4px;
+
+  li {
+    list-style: none;
+    padding: 2px;
+    margin-left: 5px;
+  }
+}
+
+.toc-list {
+  margin: 0;
+  padding-left: 10px;
+}
+
+a.toc-link {
+  height: 100%;
+  width: 100%;
+  @extend .text-truncate;
+}
+
+.is-collapsible {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.is-collapsed {
+  max-height: 0;
+}
+
+.is-position-fixed {
+  position: fixed !important;
+  top: 0;
+}
+
+.is-active-link {
+  font-weight: 700;
+  color: var(--theme-focus-color);
+}

@@ -14,7 +14,41 @@
     <h1 class="display-4">新用户注册</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="input-group mb-3">
+            {{ form.nick_name.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">昵称</span>
+            </div>
+            {{ form.nick_name }}
+        </div>
+        <div class="input-group mb-3">
+            {{ form.rel_name.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">真名</span>
+            </div>
+            {{ form.rel_name }}
+        </div>
+        <div class="input-group mb-3">
+            {{ form.student_number.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">学号</span>
+            </div>
+            {{ form.student_number }}
+        </div>
+        <div class="input-group mb-3">
+            {{ form.phone_number.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">联系方式</span>
+            </div>
+            {{ form.phone_number }}
+        </div>
+        <div class="input-group mb-3">
+            {{ form.password.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">密码</span>
+            </div>
+            {{ form.password }}
+        </div>
         <button type="button" class="btn btn-primary" onclick="signup()">注册</button>
         <a href="{% site_url 'user/login/' %}"><button type="button" class="btn btn-outline-success">登录</button></a>
     </form>

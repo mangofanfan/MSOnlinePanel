@@ -14,7 +14,20 @@
     <h1 class="display-4">用户登录</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="input-group mb-3">
+            {{ form.student_number.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">学号</span>
+            </div>
+            {{ form.student_number }}
+        </div>
+        <div class="input-group mb-3">
+            {{ form.password.errors }}
+            <div class="input-group-prepend">
+                <span class="input-group-text">密码</span>
+            </div>
+            {{ form.password }}
+        </div>
         <button type="button" class="btn btn-primary" onclick="login()">登录</button>
         <a href="/user/signup/"><button type="button" class="btn btn-outline-success">注册</button></a>
     </form>

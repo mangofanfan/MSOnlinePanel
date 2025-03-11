@@ -1,9 +1,9 @@
 import hashlib
-import json
 import os
 
 from django.http import FileResponse, JsonResponse, Http404
 from django.shortcuts import render, redirect
+from django.views.decorators.cache import cache_control
 
 from Users.models import SiteUser
 from Users.views import get_user_link, get_user_sidebar_widget
@@ -39,7 +39,6 @@ def upload(request):
         except Exception:
             return JsonResponse({"status": "error", "message": "出现了一些问题，文件上传失败。"})
     else:
-        print(user_id)
         context = {
             "form": UploadForm(),
             "global_page_top": True,
@@ -76,6 +75,6 @@ def page(request, md5: str):
     }
     return render(request, "Upload/file_page.html", context)
 
-
+@cache_control(max_age=3600)
 def file(request, md5: str):
     return FileResponse(open(os.path.join(UPLOAD_ROOT, md5), "rb"), content_type="image/jpeg")

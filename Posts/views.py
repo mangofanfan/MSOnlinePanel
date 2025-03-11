@@ -2,6 +2,7 @@ import json
 
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 
 from Upload.models import File
 from Users.models import SiteUser
@@ -21,6 +22,7 @@ def post(request, input_id):
             "is_markdown_content": _post.is_markdown,
             "sidebars": [
                 get_user_link(request, _post.author),
+                get_toc(request),
             ]
         }
         return render(request, "Posts/post.html", context)
@@ -80,3 +82,7 @@ def post_edit(request):
         return JsonResponse({"status": "success", "post_id": _post.id})
     else:
         return render(request, "Posts/post_edit.html", context)
+
+
+def get_toc(request):
+    return render_to_string("Posts/post_toc_widget.html", {}, request)
