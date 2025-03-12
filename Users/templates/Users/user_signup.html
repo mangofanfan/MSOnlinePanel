@@ -60,7 +60,8 @@
 {% endblock %}
 
 {% block custom_js_1 %}
-    <script>
+    <script type="text/javascript" src="{% static 'MSOnlinePanel/validate/validate.js' %}"></script>
+    <script type="text/javascript">
         const option = {
             autohide: true,
             delay: 6000,
@@ -82,6 +83,24 @@
 
         const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
         function signup() {
+            let nick_name = document.getElementsByName('nick_name')[0].value;
+            let rel_name = document.getElementsByName('rel_name')[0].value;
+            let student_number = document.getElementsByName('student_number')[0].value;
+            let phone_number = document.getElementsByName('phone_number')[0].value;
+            let password = document.getElementsByName('password')[0].value;
+            let errMsgs = validate(
+                ["nick_name", nick_name],
+                ["rel_name", rel_name],
+                ["student_number", student_number],
+                ["phone_number", phone_number],
+                ["password", password],
+            )
+            if (errMsgs.length > 0) {
+                // 前端格式校验
+                document.getElementById('error-message-msg').innerHTML = generateMsg(errMsgs);
+                showErrorMessage();
+                return;
+            }
             fetch('/user/signup/', {
                 method: 'POST',
                 headers: {
@@ -89,11 +108,11 @@
                     'X-CSRFToken': csrfToken
                 },
                 body: JSON.stringify({
-                    'nick_name': document.getElementsByName('nick_name')[0].value,
-                    'rel_name': document.getElementsByName('rel_name')[0].value,
-                    'phone_number': document.getElementsByName('phone_number')[0].value,
-                    'student_number': document.getElementsByName("student_number")[0].value,
-                    'password': document.getElementsByName("password")[0].value,
+                    'nick_name': nick_name,
+                    'rel_name': rel_name,
+                    'phone_number': phone_number,
+                    'student_number': student_number,
+                    'password': password,
                 })
             })
                 .then((response) => {return response.json();})
@@ -102,7 +121,7 @@
                         showSignupMessage();
                         setTimeout(function () {
                             window.location.href = '/user/login/';
-                        }, 3000);
+                        }, 1000);
                     }
                     else {
                         document.getElementById('error-message-msg').innerHTML = data.msg;

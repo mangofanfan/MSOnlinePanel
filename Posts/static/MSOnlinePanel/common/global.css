@@ -39,13 +39,13 @@
   --theme-border-color-t: rgba(255, 255, 255, 0.16);
   --theme-link-color: #dadaf1;
   --theme-link-hover-color: cornflowerblue;
-  --bs-info-text: #084298;
+  --bs-info-text: #94bfff;
   --bs-info-bg: #36848f;
   --bs-info-border: #b6d4fe;
-  --bs-success-text: #0f5132;
+  --bs-success-text: #3df3a3;
   --bs-success-bg: #346334;
   --bs-success-border: #badbcc;
-  --bs-primary-text: #055160;
+  --bs-primary-text: #7ee3f4;
   --bs-primary-bg: #2f4c57;
   --bs-primary-border: #95d4e3;
 }
@@ -62,7 +62,7 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-position: center 0;
-  transition: all 0.4s linear;
+  transition: all 0.4s;
 }
 
 img {
@@ -93,11 +93,11 @@ nav, .nav {
 }
 
 .nav-custom-link {
-  color: midnightblue;
+  color: var(--theme-link-color);
 }
 
 .nav-custom-link:hover {
-  color: navy;
+  color: var(--theme-link-hover-color);
 }
 
 .navbar-dropdown-menu {
@@ -262,6 +262,10 @@ p.mask-text {
   font-size: 1.2rem;
   color: ghostwhite;
   width: 100%;
+}
+
+.alert {
+  color: var(--theme-text-color);
 }
 
 .alert-info {

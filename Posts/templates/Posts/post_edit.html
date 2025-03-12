@@ -119,9 +119,17 @@
                         let img_md_text = `![${data.filename}](${siteUrl}/upload/file/${data.md5}/)`;
                         vditor.insertValue(img_md_text);
                     }
+                },
+                after() {
+                    let content = `{{ post.content }}`;
+                    vditor.setValue(content);
+                    themeManager.addCallback((_theme) => {vditor.setTheme(_theme)})
+                    themeManager.loadTheme();
+                    console.log("除非文章内容为空，否则已经在 Markdown 编辑其中填充文章内容。");
                 }
             });
-            vditor.setValue('{{ post.md_content }}');
+            document.getElementsByName('input-title')[0].value = "{{ post.title }}";
+            document.getElementsByName('input-image')[0].value = "{{ post.image.md5 }}";
         }
 
         function publishPost() {
@@ -136,7 +144,13 @@
                 document.getElementById("warning-msg").style.display = "block";
                 return;
             }
-            fetch("/post/edit/", {
+            let url = "";
+            {% if post %}
+            	url = "/post/edit/{{ post.id }}/";
+            {% else %}
+                url = "/post/edit/";
+            {% endif %}
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': csrfToken,

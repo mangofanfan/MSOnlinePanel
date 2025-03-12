@@ -126,7 +126,7 @@
 <section class="float-button-container fixed-bottom" id="float-button-container" style="z-index: 1; margin-bottom: 80px; text-align: center;">
     {% block float_buttons %}
     {% endblock %}
-    <button type="button" class="btn btn-outline-secondary float-button" id="btn-change-theme" onclick="changeThemeByUser()">
+    <button type="button" class="btn btn-outline-secondary float-button" id="btn-change-theme" onclick="themeManager.changeThemeByUser()">
         <svg t="1741679670838" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2518" width="35" height="35"><path d="M520.533333 503.466667l51.2 89.6 76.8-68.266667 98.133334-21.333333-42.666667-93.866667 12.8-102.4-102.4 12.8-93.866667-42.666667-21.333333 98.133334-68.266667 76.8 89.6 51.2z m-98.133333 42.666666L298.666667 473.6l123.733333-136.533333 38.4-179.2 166.4 76.8L810.666667 213.333333l-21.333334 183.466667 76.8 166.4-179.2 38.4-136.533333 123.733333-68.266667-119.466666-256 256-59.733333-59.733334 256-256z" fill="#515151" p-id="2519"></path></svg>
     </button>
 </section>
@@ -156,7 +156,8 @@
             console.log("完成渲染页面中的 Markdown 内容。")
         }
         /* 自动设置网站主题 */
-        loadTheme()
+        const themeManager = new ThemeManager();
+        themeManager.loadTheme()
     </script>
     {% block custom_js_1 %}
     {% endblock %}
